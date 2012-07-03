@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{48A26908-3EED-407B-936E-F954F47590D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DynabicPlatform</RootNamespace>
+    <AssemblyName>DynabicPlatform-1.0.0</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Debug\DynabicPlatform-1.0.0.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Stage|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Http, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft WCF REST\Microsoft.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Http.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft WCF REST\Microsoft.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\NewtonSoft\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\CommunicationLayer.cs" />
+    <Compile Include="Classes\Configuration.cs" />
+    <Compile Include="Classes\ContentFormat.cs" />
+    <Compile Include="Classes\Crypto.cs" />
+    <Compile Include="Classes\EnvironmentType.cs" />
+    <Compile Include="Classes\PlatformEnvironment.cs" />
+    <Compile Include="Classes\PlatformGateway.cs" />
+    <Compile Include="DataContracts\ApplicationInCompanyResponse.cs" />
+    <Compile Include="DataContracts\ApplicationResponse.cs" />
+    <Compile Include="DataContracts\ApplicationsInCompanyList.cs" />
+    <Compile Include="DataContracts\ApplicationsList.cs" />
+    <Compile Include="DataContracts\CompanyInfoBase.cs" />
+    <Compile Include="DataContracts\CompanyInfoRequest.cs" />
+    <Compile Include="DataContracts\CompanyInfoResponse.cs" />
+    <Compile Include="DataContracts\EventResponse.cs" />
+    <Compile Include="DataContracts\EventsList.cs" />
+    <Compile Include="DataContracts\PlatformApiEnums.cs" />
+    <Compile Include="DataContracts\SetActiveMarketingPlanResponse.cs" />
+    <Compile Include="DataContracts\SettingBase.cs" />
+    <Compile Include="DataContracts\SettingRequest.cs" />
+    <Compile Include="DataContracts\SettingResponse.cs" />
+    <Compile Include="DataContracts\SettingsList.cs" />
+    <Compile Include="DataContracts\SiteBase.cs" />
+    <Compile Include="DataContracts\SiteRequest.cs" />
+    <Compile Include="DataContracts\SiteResponse.cs" />
+    <Compile Include="DataContracts\SitesList.cs" />
+    <Compile Include="DataContracts\UserApiKeysResponse.cs" />
+    <Compile Include="DataContracts\UserBase.cs" />
+    <Compile Include="DataContracts\UserRequest.cs" />
+    <Compile Include="DataContracts\UserResponse.cs" />
+    <Compile Include="DataContracts\UsersList.cs" />
+    <Compile Include="Exceptions\AuthenticationException.cs" />
+    <Compile Include="Exceptions\AuthorizationException.cs" />
+    <Compile Include="Exceptions\DownForMaintenanceException.cs" />
+    <Compile Include="Exceptions\DynabicBillingException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\ServerException.cs" />
+    <Compile Include="Exceptions\UnexpectedException.cs" />
+    <Compile Include="Exceptions\UpgradeRequiredException.cs" />
+    <Compile Include="Interfaces\IApplicationsService.cs" />
+    <Compile Include="Interfaces\ICompanyInfoService.cs" />
+    <Compile Include="Interfaces\IDynabicEnvironment.cs" />
+    <Compile Include="Interfaces\IDynabicMarketingPlansService.cs" />
+    <Compile Include="Interfaces\IEventsService.cs" />
+    <Compile Include="Interfaces\ISettingsService.cs" />
+    <Compile Include="Interfaces\ISitesService.cs" />
+    <Compile Include="Interfaces\IUsersService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\CompanyInfoService.cs" />
+    <Compile Include="Services\DynabicMarketingPlansService.cs" />
+    <Compile Include="Services\EventService.cs" />
+    <Compile Include="Services\SettingService.cs" />
+    <Compile Include="Services\SiteService.cs" />
+    <Compile Include="Services\UserService.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

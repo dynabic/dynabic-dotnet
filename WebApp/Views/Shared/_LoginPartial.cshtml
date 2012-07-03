@@ -1,0 +1,13 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <text> Hello, @(Html.ActionLink(User.Identity.Name, "AccountInfo", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Edit account info" }))!&nbsp;
+    @(Html.ActionLink("Log off", "LogOff", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-danger" }))
+    </text>
+}
+else
+{
+    <section>
+    @(Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", data_dialog_title = "Identification", @class = "btn btn-primary" })) 
+    @(Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", data_dialog_title = "Registration", @class = "btn" }))
+    </section>
+}
