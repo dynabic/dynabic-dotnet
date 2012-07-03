@@ -1,4 +1,4 @@
-The Starter Kit gives you access to the vast majority of features exposed by Dynabic Billing. Below is given a list containing the most prominent of these features:
+#The Starter Kit gives you access to the vast majority of features exposed by Dynabic Billing. Below is given a list containing the most prominent of these features:
  1.Create, edit and retrieve Dynabic Billing Customers
  2.Create, edit, retrieve and delete Dynabic Billing Products
  3.Create, edit, retrieve and delete Subscriptions to Dynabic Products
