@@ -1,7 +1,0 @@
-﻿@model WebApp.Models.PageMessageModel
-@if (!String.IsNullOrEmpty(Model.Message))
-{ 
-    <p class="@WebApp.Models.PageMessageModel.GetEnumString(Model.Type)">
-        @Model.Message
-    </p>
-}
