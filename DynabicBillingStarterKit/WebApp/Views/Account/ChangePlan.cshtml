@@ -1,0 +1,70 @@
+﻿@model WebApp.Models.ChangePlanModel
+@{
+    ViewBag.Title = "Change Plan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hgroup class="title">
+    <h1>Change Plan</h1>
+    <h2><small>Use the drop down below to change your subscription.</small></h2>
+</hgroup>
+<p class="alert alert-info">
+    You are currently subscribed to the <strong>@Model.CurrentPlan.Name</strong>.<br />
+    Please choose another Plan if you want to change your Subscription, and select <em>Change
+        Plan</em>.
+</p>
+@*show some details about the current plan*@
+<dl>
+    <dt>Your current plan:</dt>
+    @if (Model.CurrentPlan.PricingPlans[0].UpfrontCharge.HasValue)
+    {
+@*if it has an upfront charge*@
+        <dd>
+            &raquo; has an upfront charge of @Model.CurrentPlan.PricingPlans[0].UpfrontCharge.Value.ToString("0.##")
+            @Model.CurrentPlan.PricingPlans[0].CurrencyCode;
+        </dd>
+    }
+@*if it has a trial period*@
+    @if (Model.CurrentPlan.PricingPlans[0].TrialPeriodDurationDays > 0)
+    {
+        <dd>
+            &raquo; has a trial period of @Model.CurrentPlan.PricingPlans[0].TrialPeriodDurationDays
+            days, at a cost of
+            @Model.CurrentPlan.PricingPlans[0].TrialPeriodCharge.ToString("0.##")
+            @Model.CurrentPlan.PricingPlans[0].CurrencyCode;
+        </dd>
+    }
+@*if it has recurring charges*@
+    @if (Model.CurrentPlan.PricingPlans[0].PaymentScheduleList[0].SubscriptionPeriodCharge > 0)
+    {
+        <dd>
+            &raquo; will incur, after the trial, a subscription charge of
+            @Model.CurrentPlan.PricingPlans[0].PaymentScheduleList[0].SubscriptionPeriodCharge.ToString("0.##")
+            @Model.CurrentPlan.PricingPlans[0].CurrencyCode
+            every @Model.CurrentPlan.PricingPlans[0].PaymentScheduleList[0].FrequencyRecurrenceFactor
+            @((Model.CurrentPlan.PricingPlans[0].PaymentScheduleList[0].FrequencyType == DynabicBilling.RestApiDataContract.RecurringCyclePeriod.Daily) ? "days" : "months").
+            This subscription expires after @Model.CurrentPlan.PricingPlans[0].PaymentScheduleList[0].EndDateOffsetDays
+            days;
+        </dd>
+    }
+</dl>
+@using (Html.BeginForm((string)ViewBag.FormAction, "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @(Html.ValidationSummary(true, "Please correct the errors and try again."))
+
+    <fieldset>
+        <legend>Change Plan</legend>
+        @{ Html.RenderPartial("_PageMessagePartial", Model.PageMessage);}
+        <div class="control-group">
+            @(Html.LabelFor(m => m.Plans.SelectedPlan, new { @class = "control-label" }))
+            <div class="controls">
+                <div class="input-append">
+                    @Html.DropDownListFor(m => m.Plans.SelectedPlan, Model.Plans.MyPlans)
+                </div>
+                @(Html.ValidationMessageFor(m => m.Plans.SelectedPlan))
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="submit" value="Change Plan" class="btn btn-primary" />
+        </div>
+    </fieldset>
+}

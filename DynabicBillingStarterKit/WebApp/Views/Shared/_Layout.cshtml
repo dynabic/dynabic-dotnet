@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Starter Kit</title>
+    <link href="@(Url.Content("~/favicon.ico"))" rel="shortcut icon" type="image/x-icon" />
+    <link href="@(System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css/css"))"
+        rel="stylesheet" type="text/css" />
+    <script src="@(System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/js/js"))"
+        type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <header>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <h3>
+                    <a class="brand" href="@(Url.Action("Index", "Home"))">Dynabic Starter Kit</a></h3>
+                <ul class="nav">
+                    <li>
+                        @(Html.ActionLink("Home", "Index", "Home"))</li>
+                    <li>
+                        @(Html.ActionLink("About", "About", "Home"))</li>
+                    <li>
+                        @(Html.ActionLink("Contact", "Contact", "Home"))</li>
+                    <li>
+                        @(Html.ActionLink("Prices", "Prices", "Home"))</li>
+                </ul>
+                <section id="secondary-nav" class="pull-left">
+                    @{ Html.RenderPartial("_SecondaryNavPartial");}
+
+                </section>
+                <section id="login" class="pull-right">
+                    @{ Html.RenderPartial("_LoginPartial");}
+
+                 </section>
+            </div>
+        </div>
+    </div>
+     </header>
+    @*start main container*@
+    <div id="" class="container">
+        @RenderSection("featured", required: false)
+        @RenderBody()
+        <hr />
+    </div>
+    @*end container*@
+    <footer class="footer">
+           <div class="container">
+                <div class="pull-left">
+                    <p>&copy; @(DateTime.Now.Year) - Starter Kit</p>
+                </div>
+                <div class="pull-right">
+                    <ul id="social">
+                        <li><a href="http://facebook.com" class="facebook">Facebook</a></li>
+                        <li><a href="http://twitter.com" class="twitter">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+</body>
+</html>

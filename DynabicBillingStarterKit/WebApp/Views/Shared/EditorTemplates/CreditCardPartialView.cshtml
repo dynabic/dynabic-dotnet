@@ -1,0 +1,50 @@
+﻿@model WebApp.Models.CreditCardModel
+@Html.HiddenFor(m => m.Id)
+<div class="control-group">
+    @(Html.LabelFor(m => m.FirstNameOnCard, new { @class = "control-label" }))
+    <div class="controls">
+        <div class="input-append">
+            @(Html.TextBoxFor(m => m.FirstNameOnCard, new { @class = "input-xlarge" }))
+        </div>
+        @(Html.ValidationMessageFor(m => m.FirstNameOnCard))
+    </div>
+</div>
+<div class="control-group">
+    @(Html.LabelFor(m => m.LastNameOnCard, new { @class = "control-label" }))
+    <div class="controls">
+        <div class="input-append">
+            @(Html.TextBoxFor(m => m.LastNameOnCard, new { @class = "input-xlarge" }))
+        </div>
+        @(Html.ValidationMessageFor(m => m.LastNameOnCard))
+    </div>
+</div>
+<div class="control-group">
+    @(Html.LabelFor(m => m.Number, new { @class = "control-label" }))
+    <div class="controls">
+        <div class="input-append">
+            @(Html.TextBoxFor(m => m.Number, new { @class = "input-xlarge" }))
+        </div>
+        @(Html.ValidationMessageFor(m => m.Number))
+    </div>
+</div>
+<div class="control-group">
+    @(Html.LabelFor(m => m.Cvv, new { @class = "control-label" }))
+    <div class="controls">
+        <div class="input-append">
+            @(Html.TextBoxFor(m => m.Cvv, new { @class = "input-small" }))
+        </div>
+        @(Html.ValidationMessageFor(m => m.Cvv))
+    </div>
+</div>
+<div class="control-group">
+    @(Html.LabelFor(m => m.SelectedMonth, new { @class = "control-label" }))
+    <div class="controls">
+        <div class="input-append">
+            @Html.DropDownListFor(model => model.SelectedMonth, new SelectList(Model.Months as System.Collections.IEnumerable, "Value", "Text", Model.SelectedMonth), new { @class = "input-medium" })
+        </div>
+        <div class="input-append">
+            @Html.DropDownListFor(model => model.SelectedYear, new SelectList(Model.Years as System.Collections.IEnumerable, "Value", "Text", Model.SelectedYear), new { @class = "input-small" })
+        </div>
+        @(Html.ValidationMessageFor(m => m.SelectedMonth))
+    </div>
+</div>

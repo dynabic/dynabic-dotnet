@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0A473FA-E30B-4AF8-BB78-C1D81C9CAAB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DynabicBilling</RootNamespace>
+    <AssemblyName>DynabicBilling-1.0.0</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DynabicBilling-1.0.0.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DynabicBilling-1.0.0.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Stage|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="Classes\BillingEnvironment.cs" />
+    <Compile Include="Classes\BillingGateway.cs" />
+    <Compile Include="Classes\SandboxValues.cs" />
+    <Compile Include="DataContracts\AddressBase.cs" />
+    <Compile Include="DataContracts\AddressList.cs" />
+    <Compile Include="DataContracts\AddressRequest.cs" />
+    <Compile Include="DataContracts\AddressResponse.cs" />
+    <Compile Include="DataContracts\CancellationRequest.cs" />
+    <Compile Include="DataContracts\ChargeRequest.cs" />
+    <Compile Include="DataContracts\ChargeResponse.cs" />
+    <Compile Include="DataContracts\Country.cs" />
+    <Compile Include="DataContracts\CountryList.cs" />
+    <Compile Include="DataContracts\CreditCardBase.cs" />
+    <Compile Include="DataContracts\CreditCardRequest.cs" />
+    <Compile Include="DataContracts\CreditCardResponse.cs" />
+    <Compile Include="DataContracts\CreditCardsList.cs" />
+    <Compile Include="DataContracts\Currency.cs" />
+    <Compile Include="DataContracts\CurrencyList.cs" />
+    <Compile Include="DataContracts\CustomerBase.cs" />
+    <Compile Include="DataContracts\CustomerRequest.cs" />
+    <Compile Include="DataContracts\CustomerResponse.cs" />
+    <Compile Include="DataContracts\CustomersList.cs" />
+    <Compile Include="DataContracts\enums.cs" />
+    <Compile Include="DataContracts\PaymentResponse.cs" />
+    <Compile Include="DataContracts\PricingPlanBase.cs" />
+    <Compile Include="DataContracts\PricingPlanRequest.cs" />
+    <Compile Include="DataContracts\PricingPlanResponse.cs" />
+    <Compile Include="DataContracts\PricingPlansList.cs" />
+    <Compile Include="DataContracts\ProductBase.cs" />
+    <Compile Include="DataContracts\ProductFamilyBase.cs" />
+    <Compile Include="DataContracts\ProductFamilyList.cs" />
+    <Compile Include="DataContracts\ProductFamilyRequest.cs" />
+    <Compile Include="DataContracts\ProductFamilyResponse.cs" />
+    <Compile Include="DataContracts\ProductItemBase.cs" />
+    <Compile Include="DataContracts\ProductItemRequest.cs" />
+    <Compile Include="DataContracts\ProductItemResponse.cs" />
+    <Compile Include="DataContracts\ProductItemsList.cs" />
+    <Compile Include="DataContracts\ProductMeteredPriceBase.cs" />
+    <Compile Include="DataContracts\ProductMeteredPriceList.cs" />
+    <Compile Include="DataContracts\ProductMeteredPriceRequest.cs" />
+    <Compile Include="DataContracts\ProductMeteredPriceResponse.cs" />
+    <Compile Include="DataContracts\ProductPricingPlanPaymentScheduleBase.cs" />
+    <Compile Include="DataContracts\ProductPricingPlanPaymentScheduleList.cs" />
+    <Compile Include="DataContracts\ProductPricingPlanPaymentScheduleRequest.cs" />
+    <Compile Include="DataContracts\ProductPricingPlanPaymentScheduleResponse.cs" />
+    <Compile Include="DataContracts\ProductRequest.cs" />
+    <Compile Include="DataContracts\ProductResponse.cs" />
+    <Compile Include="DataContracts\ProductsList.cs" />
+    <Compile Include="DataContracts\ReportsResponse.cs" />
+    <Compile Include="DataContracts\ReportsResults.cs" />
+    <Compile Include="DataContracts\ServiceResult.cs" />
+    <Compile Include="DataContracts\Statement.cs" />
+    <Compile Include="DataContracts\StatementDetail.cs" />
+    <Compile Include="DataContracts\StatementsList.cs" />
+    <Compile Include="DataContracts\StateProvince.cs" />
+    <Compile Include="DataContracts\StateProvinceList.cs" />
+    <Compile Include="DataContracts\SubscriptionBase.cs" />
+    <Compile Include="DataContracts\SubscriptionItemBase.cs" />
+    <Compile Include="DataContracts\SubscriptionItemHistoryResponse.cs" />
+    <Compile Include="DataContracts\SubscriptionItemLists.cs" />
+    <Compile Include="DataContracts\SubscriptionItemRequest.cs" />
+    <Compile Include="DataContracts\SubscriptionItemResponse.cs" />
+    <Compile Include="DataContracts\SubscriptionRequest.cs" />
+    <Compile Include="DataContracts\SubscriptionResponse.cs" />
+    <Compile Include="DataContracts\SubscriptionsList.cs" />
+    <Compile Include="DataContracts\TransactionBase.cs" />
+    <Compile Include="DataContracts\TransactionRequest.cs" />
+    <Compile Include="DataContracts\TransactionResponse.cs" />
+    <Compile Include="DataContracts\TransactionsList.cs" />
+    <Compile Include="Interfaces\ICustomersService.cs" />
+    <Compile Include="Interfaces\IProductFamiliesService.cs" />
+    <Compile Include="Interfaces\IProductsService.cs" />
+    <Compile Include="Interfaces\IReportsService.cs" />
+    <Compile Include="Interfaces\IStatementsService.cs" />
+    <Compile Include="Interfaces\ISubscriptionsService.cs" />
+    <Compile Include="Interfaces\ITransactionsService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\ProductFamiliesService.cs" />
+    <Compile Include="Services\ProductsService.cs" />
+    <Compile Include="Services\ReportsService.cs" />
+    <Compile Include="Services\StatementsService.cs" />
+    <Compile Include="Services\SubscriptionService.cs" />
+    <Compile Include="Services\TransactionService.cs" />
+    <Compile Include="Webhooks\BillingDateChangedEventArgs.cs" />
+    <Compile Include="Webhooks\ExpiringCardEventArgs.cs" />
+    <Compile Include="Webhooks\PaymentEventArgs.cs" />
+    <Compile Include="Webhooks\RenewalEventArgs.cs" />
+    <Compile Include="Webhooks\SignupEventArgs.cs" />
+    <Compile Include="Webhooks\SubscriptionEventArgs.cs" />
+    <Compile Include="Webhooks\SubscriptionProductChangedEventArgs.cs" />
+    <Compile Include="Webhooks\SubscriptionStateChangedEventArgs.cs" />
+    <Compile Include="Webhooks\WebhooksChannel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Http, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft WCF REST\Microsoft.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Http.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft WCF REST\Microsoft.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DynabicPlatform\DynabicPlatform.csproj">
+      <Project>{48A26908-3EED-407B-936E-F954F47590D2}</Project>
+      <Name>DynabicPlatform</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

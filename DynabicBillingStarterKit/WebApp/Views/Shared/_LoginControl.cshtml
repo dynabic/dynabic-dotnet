@@ -1,0 +1,29 @@
+﻿@model WebApp.Models.LoginModel
+<script src="@(Url.Content("~/Scripts/jquery.validate.min.js"))"></script>
+<script src="@(Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js"))"></script>
+<div class="login-content">
+    <p>
+        Please enter your user name and password.
+        @(Html.ActionLink("Register", "Register"))
+        if you don't have an account.
+    </p>
+    @(Html.ValidationSummary(true, "Log in was unsuccessful. Please correct the errors and try again.", new { @class = "alert alert-error" }))
+    @using (Html.BeginForm((string)ViewBag.FormAction, "Account", FormMethod.Post, new { @class = "login-form" }))
+    {
+        <fieldset>
+            <legend>Log In</legend>
+            <div class="clearfix">
+                @(Html.TextBoxFor(m => m.UserName, new { @placeholder = "Username" }))
+            </div>
+            <div class="clearfix">
+                @(Html.PasswordFor(m => m.Password, new { @placeholder = "Password" }))
+            </div>
+            <div class="clearfix">
+                @(Html.CheckBoxFor(m => m.RememberMe, new { @class = "checkbox  pull-left" }))
+                @(Html.LabelFor(m => m.RememberMe, new { @class = "checkbox pull-left" }))
+            </div>
+            <button class="btn btn-primary pull-right" type="submit">
+                Log In</button>
+        </fieldset>
+    }
+</div>

@@ -1,0 +1,9 @@
+﻿@model WebApp.Models.PageMessageModel
+@{
+    ViewBag.Title = "Change Plan";
+}
+<hgroup class="title">
+    <h1>Change Plan</h1>
+</hgroup>
+@{ Html.RenderPartial("_PageMessagePartial", Model);}
+@(Html.ActionLink("Fill Payment Information", "PaymentInfo", "Account", new { @class = "btn btn-primary" }))
