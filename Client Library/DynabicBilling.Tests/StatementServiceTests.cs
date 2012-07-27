@@ -7,6 +7,7 @@ namespace DynabicBilling.Tests
     {
         private BillingGateway _gateway;
         private TestsHelper _testsHelper;
+        private TestDataValues _testData;
 
         [SetUp]
         public void Init()
@@ -17,31 +18,20 @@ namespace DynabicBilling.Tests
             _gateway = new BillingGateway(BillingEnvironment.QA, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #endif
             _testsHelper = new TestsHelper(_gateway);
+            _testData = _testsHelper.PrepareStatementsTestData();
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            _testsHelper.CleanupTestData();
         }
 
         [Test]
         public void GetStatementsForSubscription()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var subscription = _testsHelper.AddTestSubscription(site);
-                Assert.IsNotNull(subscription);
-                try
-                {
-                    var statements = _gateway.Statements.GetStatementsForSubscription(subscription.Id.ToString());
-                    Assert.IsNotNull(statements);
-                }
-                finally
-                {
-                    _testsHelper.DeleteSubscriptionData(subscription);
-                }
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var statements = _gateway.Statements.GetStatementsForSubscription(_testData.SubscriptionId.ToString());
+            Assert.IsNotNull(statements);
         }
     }
 }

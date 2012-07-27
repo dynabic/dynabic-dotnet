@@ -7,22 +7,31 @@ namespace DynabicBilling.RestApiDataContract
     /// <summary>
     /// Classifies one event occurrence
     /// </summary>
+    [Flags]
+    [DataContract]
     public enum ChargeReason : short
     {
         /// <summary>All occurrences details will be shown.</summary>
+        [EnumMember]
         All = InitialUpFront | Trial | Recurrency | OneTimeOnly | RecurrencyExpired | TrialExpired,
         /// <summary>This event has occurred as an initial upfront charge.</summary>
+        [EnumMember]
         InitialUpFront = 1,
         /// <summary>This event has occurred as a charge for the trial period.</summary>
+        [EnumMember]
         Trial = 2,
         /// <summary>This event has occurred for a recurrent payment.</summary>
+        [EnumMember]
         Recurrency = 4,
         /// <summary>This event will occur only once.</summary>
+        [EnumMember]
         OneTimeOnly = 8,
         /// <summary>This event will occur when the recurrency expires. The customer will be charged with an amount proportional with the time passed since the last payment event.
         /// We won't charge for the entire recurring period but only for the time passed since the last payment occurred</summary>
+        [EnumMember]
         RecurrencyExpired = 16,
         /// <summary>This event will occur when the trial period expires. The customer will now be charged here. It is used only to mark the end of a period</summary>
+        [EnumMember]
         TrialExpired = 32,
     }
 

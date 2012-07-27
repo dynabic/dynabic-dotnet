@@ -7,6 +7,8 @@ namespace DynabicPlatform.Tests
     public class SiteServiceTests : AssertionHelper
     {
         private PlatformGateway _gateway;
+        private TestsHelper _testsHelper;
+        private TestDataValues _testData;
 
         [SetUp]
         public void Init()
@@ -16,27 +18,15 @@ namespace DynabicPlatform.Tests
 #else
             _gateway = new PlatformGateway(PlatformEnvironment.QA, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #endif
+            _testsHelper = new TestsHelper(_gateway);
+            _testData = _testsHelper.PrepareSitesTestData();
         }
 
-        #region Helpers
-
-        private SiteResponse AddSite()
+        [TearDown]
+        public void Cleanup()
         {
-            var newSite = new SiteRequest
-            {
-                IsTestMode = true,
-                Name = "Name",
-                Subdomain = "demoSubdomain",
-            };
-            return _gateway.Sites.AddSite(newSite);
+            _testsHelper.CleanupTestData();
         }
-
-        private void DeleteSite(int id)
-        {
-            _gateway.Sites.DeleteSite(id.ToString());
-        }
-
-        #endregion Helpers
 
         [Test]
         public void GetSites()
@@ -48,89 +38,45 @@ namespace DynabicPlatform.Tests
         [Test]
         public void GetSiteById()
         {
-            var newSite = AddSite();
-            Assert.IsNotNull(newSite);
-            try
-            {
-                var site = _gateway.Sites.GetSiteById(newSite.Id.ToString());
-                Assert.IsNotNull(site);
-                Assert.AreEqual(newSite.Id, site.Id);
-            }
-            finally
-            {
-                DeleteSite(newSite.Id);
-            }
+            var site = _gateway.Sites.GetSiteById(_testData.SiteId.ToString());
+            Assert.IsNotNull(site);
+            Assert.AreEqual(_testData.SiteId, site.Id);
         }
 
         [Test]
         public void GetSiteBySubdomain()
         {
-            var newSite = AddSite();
-            Assert.IsNotNull(newSite);
-            try
-            {
-                var site = _gateway.Sites.GetSiteBySubdomain(newSite.Subdomain);
-                Assert.IsNotNull(site);
-                Assert.AreEqual(newSite.Subdomain.ToLower(), site.Subdomain.ToLower());
-            }
-            finally
-            {
-                DeleteSite(newSite.Id);
-            }
+            var site = _gateway.Sites.GetSiteBySubdomain(_testData.Subdomain);
+            Assert.IsNotNull(site);
+            Assert.AreEqual(_testData.Subdomain.ToLower(), site.Subdomain.ToLower());
         }
 
         [Test]
         public void GetSitesByName()
         {
-            var newSite = AddSite();
-            Assert.IsNotNull(newSite);
-            try
+            var sites = _gateway.Sites.GetSitesByName(_testData.SiteName);
+            Assert.IsNotNull(sites);
+            foreach (var site in sites)
             {
-                var sites = _gateway.Sites.GetSitesByName(newSite.Name);
-                Assert.IsNotNull(sites);
-                foreach (var site in sites)
-                {
-                    Assert.AreEqual(newSite.Name, site.Name);
-                }
+                Assert.AreEqual(_testData.SiteName, site.Name);
             }
-            finally
-            {
-                DeleteSite(newSite.Id);
-            }
-        }
-
-        [Test]
-        public void AddAndDeleteSite()
-        {
-            var newSite = AddSite();
-            Assert.IsNotNull(newSite);
-            DeleteSite(newSite.Id);
         }
 
         [Test]
         public void UpdateSite()
         {
-            var newSite = AddSite();
-            Assert.IsNotNull(newSite);
-            try
-            {
-                // get exists site
-                var site = _gateway.Sites.GetSiteById(newSite.Id.ToString());
-                Assert.IsNotNull(site);
-                Assert.AreEqual(newSite.Id, site.Id);
+            // get exists site
+            var site = _gateway.Sites.GetSiteById(_testData.SiteId.ToString());
+            Assert.IsNotNull(site);
+            Assert.AreEqual(_testData.SiteId, site.Id);
 
-                // change name property
-                var updateValue = "test site update";
-                site.Name = updateValue;
+            // change name property
+            var updateValue = "test site update";
+            site.Name = updateValue;
 
-                var updatedSite = _gateway.Sites.UpdateSite(site, newSite.Id.ToString());
-                Assert.IsNotNull(updatedSite);
-                Assert.AreEqual(updateValue, updatedSite.Name);
-            }
-            finally
-            {
-                DeleteSite(newSite.Id);
-            }
+            var updatedSite = _gateway.Sites.UpdateSite(site, _testData.SiteId.ToString());
+            Assert.IsNotNull(updatedSite);
+            Assert.AreEqual(updateValue, updatedSite.Name);
         }
     }
 }

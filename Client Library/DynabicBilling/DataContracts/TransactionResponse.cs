@@ -11,6 +11,9 @@ namespace DynabicBilling.RestApiDataContract
     {
         #region Data Members
 
+        [DataMember(Name = "service_result", IsRequired = false)]
+        public ServiceResult ServiceResult { set; get; }
+
         /// <summary>
         /// Date when the Transaction was made
         /// </summary>
@@ -112,6 +115,7 @@ namespace DynabicBilling.RestApiDataContract
         public TransactionResponse()
         {
             this.TransactionDate = DateTime.MinValue.ToUniversalTime();
+            this.ServiceResult = new ServiceResult();
         }
     }
 }

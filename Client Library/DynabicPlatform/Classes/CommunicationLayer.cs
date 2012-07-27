@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using DynabicPlatform.Exceptions;
 using DynabicPlatform.Interfaces;
+using DynabicPlatform.RestApiDataContract;
 using Microsoft.Http;
 using Newtonsoft.Json;
 
@@ -64,7 +65,7 @@ namespace DynabicPlatform.Classes
         public TResponse Get<TResponse>(string url)
         {
             var response = ExecuteMethod(() => { return _httpClient.Get(SignUrl(url)); });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
 
             if (response.Content.ContentType.ToLower().Contains(ContentFormat.JSON))
             {
@@ -84,7 +85,7 @@ namespace DynabicPlatform.Classes
                 SignHttpContent(content);
                 return _httpClient.Post(url, content);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
 
             if (response.Content.ContentType.ToLower().Contains(ContentFormat.JSON))
             {
@@ -104,7 +105,7 @@ namespace DynabicPlatform.Classes
                 SignHttpContent(content);
                 return _httpClient.Post(url, content);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
         }
 
         public TResponse Put<TRequest, TResponse>(string url, TRequest request)
@@ -115,7 +116,7 @@ namespace DynabicPlatform.Classes
                 SignHttpContent(content);
                 return _httpClient.Put(url, content);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
 
             if (response.Content.ContentType.ToLower().Contains(ContentFormat.JSON))
             {
@@ -133,7 +134,7 @@ namespace DynabicPlatform.Classes
             {
                 return _httpClient.Put(SignUrl(url), this.EmptyContent);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
 
             if (response.Content.ContentType.ToLower().Contains(ContentFormat.JSON))
             {
@@ -151,7 +152,7 @@ namespace DynabicPlatform.Classes
             {
                 return _httpClient.Put(SignUrl(url), this.EmptyContent);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
             return response;
         }
 
@@ -163,7 +164,7 @@ namespace DynabicPlatform.Classes
                 SignHttpContent(content);
                 return _httpClient.Put(url, content);
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
         }
 
         public HttpStatusCode Delete(string url)
@@ -172,14 +173,33 @@ namespace DynabicPlatform.Classes
             {
                 return _httpClient.Delete(SignUrl(url));
             });
-            ThrowExceptionIfErrorStatusCode(response.StatusCode, string.Empty);
+            ThrowExceptionIfErrorStatusCode(response, string.Empty);
             return response.StatusCode;
         }
 
-        public static void ThrowExceptionIfErrorStatusCode(HttpStatusCode httpStatusCode, String message)
+        public static void ThrowExceptionIfErrorStatusCode(HttpResponseMessage response, String message)
         {
+            HttpStatusCode httpStatusCode = response.StatusCode;
             if (httpStatusCode != HttpStatusCode.OK && httpStatusCode != HttpStatusCode.Created)
             {
+                ServiceError error = null;
+                string responseDescription = string.Empty;
+                try
+                {
+                    if (response.Content.ContentType.ToLower().Contains(ContentFormat.JSON))
+                    {
+                        error = JsonConvert.DeserializeObject<ServiceError>(response.Content.ReadAsString());
+                    }
+                    else
+                    {
+                        error = response.Content.ReadAsDataContract<ServiceError>();
+                    }
+                }
+                catch { }
+
+                if (error != null)
+                    responseDescription = error.ErrorDescription;
+
                 switch (httpStatusCode)
                 {
                     case HttpStatusCode.Unauthorized:
@@ -196,7 +216,10 @@ namespace DynabicPlatform.Classes
                         throw new UpgradeRequiredException();
                     default:
                         var exception = new UnexpectedException();
-                        exception.Source = "Unexpected HTTP_RESPONSE " + httpStatusCode;
+                        if (string.IsNullOrEmpty(responseDescription))
+                            exception.Source = "Unexpected HTTP_RESPONSE " + httpStatusCode;
+                        else
+                            exception.Source = string.Format("Unexpected HTTP_RESPONSE {0}. Description: {1}", httpStatusCode, responseDescription);
                         throw exception;
                 }
             }

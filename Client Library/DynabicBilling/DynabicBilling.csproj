@@ -125,6 +125,7 @@
     <Compile Include="DataContracts\ProductsList.cs" />
     <Compile Include="DataContracts\ReportsResponse.cs" />
     <Compile Include="DataContracts\ReportsResults.cs" />
+    <Compile Include="DataContracts\ServiceError.cs" />
     <Compile Include="DataContracts\ServiceResult.cs" />
     <Compile Include="DataContracts\Statement.cs" />
     <Compile Include="DataContracts\StatementDetail.cs" />

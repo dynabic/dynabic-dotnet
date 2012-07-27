@@ -504,7 +504,7 @@ namespace WebApp.Controllers
             ProfileCommon profile = ProfileCommon.GetUserProfile(User.Identity.Name);
             try
             {
-                var creditCard = _dynabicBillingGateway.Customer.GetFirstCreditCardForCustomerByReferenceId(profile.CustomerReferenceId);
+                var creditCard = _dynabicBillingGateway.Customer.GetFirstCreditCardForCustomerByReferenceId(Config.MySiteSubdomain, profile.CustomerReferenceId);
             }
             catch (NotFoundException)
             {

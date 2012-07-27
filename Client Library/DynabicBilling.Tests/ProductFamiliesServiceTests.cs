@@ -8,6 +8,7 @@ namespace DynabicBilling.Tests
     {
         private BillingGateway _gateway = null;
         private TestsHelper _testsHelper;
+        private TestDataValues _testData;
 
         [SetUp]
         public void Init()
@@ -18,187 +19,101 @@ namespace DynabicBilling.Tests
             _gateway = new BillingGateway(BillingEnvironment.QA, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #endif
             _testsHelper = new TestsHelper(_gateway);
+            _testData = _testsHelper.PrepareProductFamiliesTestData();
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            _testsHelper.CleanupTestData();
         }
 
         [Test]
         public void GetProductFamilies()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                _testsHelper.AddProductFamily(site.Id);
-                _testsHelper.AddProductFamily(site.Id);
-                _testsHelper.AddProductFamily(site.Id);
-                var families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(3, families.Count);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var families = _gateway.ProductFamilies.GetProductFamilies(_testData.Subdomain);
+            Assert.IsNotNull(families);
+            Assert.AreEqual(4, families.Count);
         }
 
         [Test]
         public void GetProductFamilyById()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
-
-                var family = _gateway.ProductFamilies.GetProductFamilyById(newFamily.Id.ToString());
-                Assert.IsNotNull(family);
-                Assert.AreEqual(newFamily.Id, family.Id);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
+            Assert.AreEqual(_testData.ProductFamilyId, family.Id);
         }
 
         [Test]
         public void GetProductFamilyByName()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
-
-                var family = _gateway.ProductFamilies.GetProductFamilyByName(site.Subdomain, newFamily.Name);
-                Assert.IsNotNull(family);
-                Assert.AreEqual(newFamily.Name, family.Name);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var family = _gateway.ProductFamilies.GetProductFamilyByName(_testData.Subdomain, _testData.ProductFamilyName);
+            Assert.IsNotNull(family);
+            Assert.AreEqual(_testData.ProductFamilyName, family.Name);
         }
 
         [Test]
         public void AddProductFamily()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var newFamily = _testsHelper.AddProductFamily(_testData.SiteId);
+            Assert.IsNotNull(newFamily);
+            _gateway.ProductFamilies.DeleteProductFamily(newFamily.Id.ToString());
         }
 
         [Test]
         public void UpdateProductFamily()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
-                newFamily.Name += "_updated";
+            var newFamily = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(newFamily);
 
-                var updatedFamily = _gateway.ProductFamilies.UpdateProductFamily(newFamily, newFamily.Id.ToString());
-                Assert.IsNotNull(updatedFamily);
-                Assert.AreEqual(newFamily.Name, updatedFamily.Name);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            newFamily.Name += "_updated";
+
+            var updatedFamily = _gateway.ProductFamilies.UpdateProductFamily(newFamily, newFamily.Id.ToString());
+            Assert.IsNotNull(updatedFamily);
+            Assert.AreEqual(newFamily.Name, updatedFamily.Name);
         }
 
         [Test]
         public void DeleteProductFamily()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
-
-                var families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.AreEqual(newFamily.Id, families[0].Id);
-
-                _gateway.ProductFamilies.DeleteProductFamily(newFamily.Id.ToString());
-
-                families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(0, families.Count);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var newFamily = _testsHelper.AddProductFamily(_testData.SiteId);
+            Assert.IsNotNull(newFamily);
+            _gateway.ProductFamilies.DeleteProductFamily(newFamily.Id.ToString());
         }
 
         [Test]
         public void ArchiveProductFamily()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
+            var family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
+            Assert.False(family.isArchived);
 
-                var families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.False(families[0].isArchived);
+            _gateway.ProductFamilies.ArchiveProductFamily(family.Id.ToString());
 
-                _gateway.ProductFamilies.ArchiveProductFamily(newFamily.Id.ToString());
-
-                families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain, ContentFormat.XML, "true");
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.True(families[0].isArchived);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
+            Assert.True(family.isArchived);
         }
 
         [Test]
         public void ActivateProductFamily()
         {
-            var site = _testsHelper.AddSite();
-            try
-            {
-                var newFamily = _testsHelper.AddProductFamily(site.Id);
-                Assert.IsNotNull(newFamily);
+            var family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
 
-                var families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.False(families[0].isArchived);
+            // Archive product family
+            _gateway.ProductFamilies.ArchiveProductFamily(family.Id.ToString());
 
-                // Archive product family
-                _gateway.ProductFamilies.ArchiveProductFamily(newFamily.Id.ToString());
+            family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
+            Assert.True(family.isArchived);
 
-                families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain, ContentFormat.XML, "true");
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.True(families[0].isArchived);
+            // Activate product family
+            _gateway.ProductFamilies.ActivateProductFamily(family.Id.ToString());
 
-                // Activate product family
-                _gateway.ProductFamilies.ActivateProductFamily(newFamily.Id.ToString());
-
-                families = _gateway.ProductFamilies.GetProductFamilies(site.Subdomain);
-                Assert.IsNotNull(families);
-                Assert.AreEqual(1, families.Count);
-                Assert.False(families[0].isArchived);
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            family = _gateway.ProductFamilies.GetProductFamilyById(_testData.ProductFamilyId.ToString());
+            Assert.IsNotNull(family);
+            Assert.False(family.isArchived);
         }
     }
 }

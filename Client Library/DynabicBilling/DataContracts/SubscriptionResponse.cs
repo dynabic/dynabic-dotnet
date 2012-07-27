@@ -105,6 +105,7 @@ namespace DynabicBilling.RestApiDataContract
         {
             this.SignupDate = DateTime.MinValue.ToUniversalTime();
             this.ServiceResult = new ServiceResult();
+            this.Status = SubscriptionStatus.ConfigurationError;
             //this.SubscriptionItems = new SubscriptionItemResponseList();
         }
 

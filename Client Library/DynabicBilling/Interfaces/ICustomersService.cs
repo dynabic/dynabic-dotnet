@@ -99,7 +99,7 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// <param name="customerReferenceId"> The reference Id of the Customer whose Credit Cards are to be retrieved </param>
         /// <param name="format"> The format used for the data transfer (XML or JSON) </param>
         /// <returns> A CreditCardsList object containing all Credit Cards that correspond to the specified Customer </returns>
-        CreditCardsList GetCreditCardsByReferenceId(string customerReferenceId, string format = "xml");
+        CreditCardsList GetCreditCardsByReferenceId(string siteSubdomain, string customerReferenceId, string format = "xml");
 
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// <param name="customerReferenceId"> The Customer whose Credit Card is to be retrieved </param>
         /// <param name="format"> The format used for the data transfer (XML or JSON) </param>
         /// <returns> A CreditCardResponse object containing first credit card that belongs to the specified Customer </returns>
-        CreditCardResponse GetFirstCreditCardForCustomerByReferenceId(string customerReferenceId, string format = "xml");
+        CreditCardResponse GetFirstCreditCardForCustomerByReferenceId(string siteSubdomain, string customerReferenceId, string format = "xml");
 
         /// <summary>
         /// Updates a CreditCard

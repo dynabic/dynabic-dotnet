@@ -148,9 +148,9 @@ namespace DynabicBilling
         /// <param name="customerReferenceId">Customer's ReferenceID</param>
         /// <param name="format"> The desired response format (xml/json) </param>
         /// <returns> A CreditCardsList object containing all credit cards that correspond to the specified Customer </returns>
-        public CreditCardsList GetCreditCardsByReferenceId(string customerReferenceId, string format = ContentFormat.XML)
+        public CreditCardsList GetCreditCardsByReferenceId(string siteSubdomain, string customerReferenceId, string format = ContentFormat.XML)
         {
-            return _service.Get<CreditCardsList>(string.Format("{0}/reference-id/{1}/credit-cards.{2}", _gatewayURL, customerReferenceId, format));
+            return _service.Get<CreditCardsList>(string.Format("{0}/{1}/reference-id/{2}/credit-cards.{3}", _gatewayURL, siteSubdomain, customerReferenceId, format));
         }
 
         /// <summary>
@@ -170,9 +170,9 @@ namespace DynabicBilling
         /// <param name="customerReferenceId"> The Customer whose Credit Card is to be retrieved </param>
         /// <param name="format"> The format used for the data transfer (XML or JSON) </param>
         /// <returns> A CreditCardResponse object containing first credit card that belongs to the specified Customer </returns>
-        public CreditCardResponse GetFirstCreditCardForCustomerByReferenceId(string customerReferenceId, string format = ContentFormat.XML)
+        public CreditCardResponse GetFirstCreditCardForCustomerByReferenceId(string siteSubdomain, string customerReferenceId, string format = ContentFormat.XML)
         {
-            return _service.Get<CreditCardResponse>(string.Format("{0}/reference-id/{1}/credit-card.{2}", _gatewayURL, customerReferenceId, format));
+            return _service.Get<CreditCardResponse>(string.Format("{0}/{1}/reference-id/{2}/credit-card.{3}", _gatewayURL, siteSubdomain, customerReferenceId, format));
         }
 
         #endregion GET

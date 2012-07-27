@@ -76,6 +76,7 @@
     <Compile Include="DataContracts\EventResponse.cs" />
     <Compile Include="DataContracts\EventsList.cs" />
     <Compile Include="DataContracts\PlatformApiEnums.cs" />
+    <Compile Include="DataContracts\ServiceError.cs" />
     <Compile Include="DataContracts\SetActiveMarketingPlanResponse.cs" />
     <Compile Include="DataContracts\SettingBase.cs" />
     <Compile Include="DataContracts\SettingRequest.cs" />

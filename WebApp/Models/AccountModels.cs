@@ -292,12 +292,12 @@ namespace WebApp.Models
         {
             CreditCard = new CreditCardModel();
             BillingAddress = new BillingAddressModel();
-
+            
             //get the first credit card of our customer to edit
             CreditCardResponse creditCard;
             try
             {
-                creditCard = dynabicBillingGateway.Customer.GetFirstCreditCardForCustomerByReferenceId(customerReferenceId);
+                creditCard = dynabicBillingGateway.Customer.GetFirstCreditCardForCustomerByReferenceId(Config.MySiteSubdomain, customerReferenceId);
             }
             catch (NotFoundException)
             {

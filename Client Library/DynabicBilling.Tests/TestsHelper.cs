@@ -1,19 +1,24 @@
-﻿
-using System;
+﻿using System;
+using System.Linq;
 using DynabicBilling.Classes;
 using DynabicBilling.RestApiDataContract;
 using DynabicPlatform.RestApiDataContract;
 using NUnit.Framework;
+
 namespace DynabicBilling.Tests
 {
-    public class TestsHelper
+    internal class TestsHelper
     {
+        private const string TEST_SITE = "demoSubdomain";
         private readonly BillingGateway _gateway;
 
         public TestsHelper(BillingGateway gateway)
         {
             _gateway = gateway;
+            CleanupTestData();
         }
+
+        #region Helpers
 
         private AddressRequest CreateDafaultAddress()
         {
@@ -71,7 +76,7 @@ namespace DynabicBilling.Tests
             };
         }
 
-        public CustomerResponse AddCustomer(string subdomain)
+        private CustomerResponse AddCustomer(string subdomain)
         {
             var request = CreateDefaultCustomer();
             return _gateway.Customer.AddCustomer(subdomain, request);
@@ -89,34 +94,15 @@ namespace DynabicBilling.Tests
             return _gateway.Customer.AddBillingAddress(customerId.ToString(), request);
         }
 
-        public SiteResponse AddSite()
+        private SiteResponse AddSite()
         {
-            // Remove test site if it exists.
-            var subDomain = "demoSubdomain";
-            try
-            {
-                var site = _gateway.Sites.GetSiteBySubdomain(subDomain);
-                if (site != null)
-                {
-                    _gateway.Sites.DeleteSite(site.Id.ToString());
-                }
-            }
-            catch
-            {
-            }
-
             var newSite = new SiteRequest
             {
                 IsTestMode = true,
-                Name = "Name",
-                Subdomain = subDomain,
+                Name = TEST_SITE,
+                Subdomain = TEST_SITE,
             };
             return _gateway.Sites.AddSite(newSite);
-        }
-
-        public void DeleteSite(int id)
-        {
-            _gateway.Sites.DeleteSite(id.ToString());
         }
 
         public ProductFamilyResponse AddProductFamily(int siteId)
@@ -124,7 +110,7 @@ namespace DynabicBilling.Tests
             var prodFamily = new ProductFamilyRequest
             {
                 SiteId = siteId,
-                Name = Guid.NewGuid().ToString("N"),
+                Name = "StarterKit v1.0 " + Guid.NewGuid().ToString("N"),
                 Description = "Description",
             };
             return _gateway.ProductFamilies.AddProductFamily(prodFamily);
@@ -209,7 +195,7 @@ namespace DynabicBilling.Tests
             return product;
         }
 
-        public SubscriptionResponse AddTestSubscription(SiteResponse site)
+        private SubscriptionResponse AddTestSubscription(SiteResponse site)
         {
             var product = AddProduct(site.Id);
 
@@ -242,11 +228,170 @@ namespace DynabicBilling.Tests
             return _gateway.Subscription.AddSubscription(site.Subdomain, subscriptionRequest);
         }
 
-        public void DeleteSubscriptionData(SubscriptionResponse subscription)
+        public void CleanupTestData()
         {
-            _gateway.Customer.DeleteCreditCard(subscription.CustomerId.ToString(), subscription.CreditCardId.ToString());
-            _gateway.Customer.DeleteCustomer(subscription.CustomerId.ToString());
+            try
+            {
+                var site = _gateway.Sites.GetSiteBySubdomain(TEST_SITE);
+                if (site != null)
+                {
+                    try
+                    {
+                        var customers = _gateway.Customer.GetAllCustomers(site.Subdomain);
+                        if (customers != null)
+                        {
+                            foreach (var customer in customers)
+                            {
+                                try
+                                {
+                                    var cards = _gateway.Customer.GetCreditCards(customer.Id.ToString());
+                                    if (cards != null)
+                                    {
+                                        foreach (var card in cards)
+                                        {
+                                            _gateway.Customer.DeleteCreditCard(customer.Id.ToString(), card.Id.ToString());
+                                        }
+                                    }
+                                }
+                                catch { }
+                                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
+                            }
+                        }
+                    }
+                    catch { }
+                    _gateway.Sites.DeleteSite(site.Id.ToString());
+                }
+            }
+            catch { }
         }
 
+        #endregion
+
+        #region Tests
+
+        public TestDataValues PrepareCustomersTestData()
+        {
+            var testData = new TestDataValues();
+
+            var site = AddSite();
+            Assert.IsNotNull(site);
+            testData.SiteId = site.Id;
+            testData.Subdomain = site.Subdomain;
+
+            var customer = AddCustomer(site.Subdomain);
+            Assert.IsNotNull(customer);
+            testData.CustomerId = customer.Id;
+            testData.ReferenceId = customer.ReferenceId;
+
+            var creditCard = AddCreditCard(customer.Id);
+            Assert.IsNotNull(creditCard);
+            testData.CreditCardId = creditCard.Id;
+
+            var address = AddAddress(customer.Id);
+            Assert.IsNotNull(address);
+            testData.BillingAddressId = address.Id;
+
+            return testData;
+        }
+
+        public TestDataValues PrepareEventsTestData()
+        {
+            var testData = new TestDataValues();
+            var site = AddSite();
+            Assert.IsNotNull(site);
+            testData.SiteId = site.Id;
+            testData.Subdomain = site.Subdomain;
+
+            var subscription = AddTestSubscription(site);
+            Assert.IsNotNull(subscription);
+            testData.SubscriptionId = subscription.Id;
+
+            return testData;
+        }
+
+        public TestDataValues PrepareProductFamiliesTestData()
+        {
+            var testData = new TestDataValues();
+            var site = AddSite();
+            Assert.IsNotNull(site);
+            testData.SiteId = site.Id;
+            testData.Subdomain = site.Subdomain;
+
+            var prodFamily = AddProductFamily(site.Id);
+            Assert.IsNotNull(prodFamily);
+            testData.ProductFamilyId = prodFamily.Id;
+            testData.ProductFamilyName = prodFamily.Name;
+            AddProductFamily(site.Id);
+            AddProductFamily(site.Id);
+
+            var subscription = AddTestSubscription(site);
+            Assert.IsNotNull(subscription);
+            testData.SubscriptionId = subscription.Id;
+            testData.CustomerId = subscription.CustomerId;
+            testData.CreditCardId = subscription.CreditCardId.GetValueOrDefault();
+
+            return testData;
+        }
+
+        public TestDataValues PrepareProductsTestData()
+        {
+            var testData = new TestDataValues();
+
+            var site = AddSite();
+            Assert.IsNotNull(site);
+            testData.SiteId = site.Id;
+            testData.Subdomain = site.Subdomain;
+
+            var family = AddProductFamily(site.Id);
+            Assert.IsNotNull(family);
+            testData.ProductFamilyId = family.Id;
+            testData.ProductFamilyName = family.Name;
+
+            var product = AddProductToFamily(family.Id);
+            Assert.IsNotNull(product);
+            testData.ProductId = product.Id;
+            testData.ProductName = product.Name;
+            testData.ReferenceId = product.ApiRef1;
+            return testData;
+        }
+
+        public TestDataValues PrepareReportsTestData()
+        {
+            return PrepareProductFamiliesTestData();
+        }
+
+        internal TestDataValues PrepareStatementsTestData()
+        {
+            return PrepareProductFamiliesTestData();
+        }
+
+        internal TestDataValues PrepareSubscriptionsTestData()
+        {
+            return PrepareProductFamiliesTestData();
+        }
+
+        internal TestDataValues PrepareTransactionsTestData()
+        {
+            return PrepareProductFamiliesTestData();
+        }
+
+        #endregion
     }
+
+    internal class TestDataValues
+    {
+        public int SiteId { get; set; }
+        public string Subdomain { get; set; }
+        public int CustomerId { get; set; }
+        public string ReferenceId { get; set; }
+        public int CreditCardId { get; set; }
+        public int BillingAddressId { get; set; }
+        public int SubscriptionId { get; set; }
+        public int ProductFamilyId { get; set; }
+        public string ProductFamilyName { get; set; }
+        public string ProductName { get; set; }
+        public int ProductId { get; set; }
+    }
+
+
 }

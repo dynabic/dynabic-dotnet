@@ -57,12 +57,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingServiceTests.cs" />
     <Compile Include="SiteServiceTests.cs" />
+    <Compile Include="TestsHelper.cs" />
     <Compile Include="UserServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DynabicPlatform\DynabicPlatform.csproj">
       <Project>{48A26908-3EED-407B-936E-F954F47590D2}</Project>
-      <Name>DynabicPlatform</Name>
+      <Name>DynabicPlatform %28StarterKit\v1.0\DynabicPlatform%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

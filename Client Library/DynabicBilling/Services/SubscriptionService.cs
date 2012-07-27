@@ -192,9 +192,11 @@ namespace DynabicBilling
         /// </summary>
         /// <param name="subscriptionId">The Id of the Subscription whose Product needs to be changed</param>
         /// <param name="newProductPricingPlanId">The ProductPricingPlanId of the new Product for the Subscription</param>
-        public void ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId)
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string format = ContentFormat.XML)
         {
-            _service.Put(string.Format("{0}/changeproduct/{1}/{2}", _gatewayURL, subscriptionId, newProductPricingPlanId));
+            return _service.Put<ServiceResult>(string.Format("{0}/changeproduct/{1}/{2}.{3}", _gatewayURL, subscriptionId, newProductPricingPlanId, format));
         }
 
         /// <summary>
@@ -206,9 +208,9 @@ namespace DynabicBilling
         /// A charge for the full amount of the new product will be applied
         /// The period start date will be reset to today's date
         /// </summary>
-        public void UpgradeDowngradeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string includeTrial, string includeUpfrontCharge/*, string format = ContentFormat.XML*/)
+        public ServiceResult UpgradeDowngradeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string includeTrial, string includeUpfrontCharge, string format = ContentFormat.XML)
         {
-            _service.Put(string.Format("{0}/upgradedowngrade/{1}/{2}/{3}/{4}", _gatewayURL, subscriptionId, newProductPricingPlanId, includeTrial, includeUpfrontCharge/*, format*/));
+            return _service.Put<ServiceResult>(string.Format("{0}/upgradedowngrade/{1}/{2}/{3}/{4}.{5}", _gatewayURL, subscriptionId, newProductPricingPlanId, includeTrial, includeUpfrontCharge, format));
         }
 
         /// <summary>
@@ -222,9 +224,11 @@ namespace DynabicBilling
         /// </summary>
         /// <param name="subscriptionId">The Id of the Subscription</param>
         /// <param name="request">The request.</param>
-        public void CancelSubscription(string subscriptionId, CancellationRequest request)
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public ServiceResult CancelSubscription(string subscriptionId, CancellationRequest request, string format = ContentFormat.XML)
         {
-            _service.Put<CancellationRequest>(string.Format("{0}/cancel/{1}", _gatewayURL, subscriptionId), request);
+            return _service.Put<CancellationRequest, ServiceResult>(string.Format("{0}/cancel/{1}.{2}", _gatewayURL, subscriptionId, format), request);
         }
 
         /// <summary>

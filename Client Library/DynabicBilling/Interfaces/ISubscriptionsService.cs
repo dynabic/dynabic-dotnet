@@ -166,7 +166,7 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// </summary>
         /// <param name="subscriptionId"> The Id of the Subscription whose Product needs to be changed </param>
         /// <param name="newProductPricingPlanId"> The ProductPricingPlanId of the new Product for the Subscription </param>
-        void ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId);
+        DynabicBilling.RestApiDataContract.ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string format = "xml");
 
         /// <summary>
         /// An upgrade/downgrade "migration" allows you to move a subscriber to a new product using basic proration rules. 
@@ -177,7 +177,7 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// A charge for the full amount of the new product will be applied
         /// The period start date will be reset to today's date
         /// </summary>
-        void UpgradeDowngradeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string includeTrial, string includeUpfrontCharge/*, string format = "xml"*/);
+        DynabicBilling.RestApiDataContract.ServiceResult UpgradeDowngradeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string includeTrial, string includeUpfrontCharge, string format = "xml");
 
         /// <summary>
         /// Cancels a subscription. The effects are:
@@ -190,7 +190,7 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// </summary>
         /// <param name="subscriptionId"> The Id of the Subscription </param>
         /// <param name="request">The cancellation request.</param>
-        void CancelSubscription(string subscriptionId, CancellationRequest request);
+        DynabicBilling.RestApiDataContract.ServiceResult CancelSubscription(string subscriptionId, CancellationRequest request, string format = "xml");
 
         /// <summary>
         /// Reactivates a cancelled subscription

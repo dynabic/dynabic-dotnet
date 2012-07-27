@@ -7,6 +7,8 @@ namespace DynabicPlatform.Tests
     public class UserServiceTests : AssertionHelper
     {
         private PlatformGateway _gateway;
+        private TestsHelper _testsHelper;
+        private TestDataValues _testData;
 
         [SetUp]
         public void Init()
@@ -16,32 +18,15 @@ namespace DynabicPlatform.Tests
 #else
             _gateway = new PlatformGateway(PlatformEnvironment.QA, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #endif
+            _testsHelper = new TestsHelper(_gateway);
+            _testData = _testsHelper.PrepareUsersTestData();
         }
 
-        #region Helpers
-
-        private UserResponse AddUser()
+        [TearDown]
+        public void Cleanup()
         {
-            var newUser = new UserRequest();
-            newUser.Email = "sergey.slavin@dynabic.com";
-            newUser.FacebookId = "FacebookId";
-            newUser.GoogleAppsUserName = "GoogleAppsUserName";
-            newUser.FirstName = "FirstName";
-            newUser.LastName = "LastName";
-            newUser.YahooUserName = "YahooUserName";
-            newUser.PasswordHash = "test123";
-            newUser.Active = true;
-            newUser.Deleted = false;
-
-            return _gateway.Users.AddUser(newUser);
+            _testsHelper.CleanupTestData();
         }
-
-        private void DeleteUser(int id)
-        {
-            _gateway.Users.DeleteUser(id.ToString());
-        }
-
-        #endregion Helpers
 
         [Test]
         public void GetAllUsers()
@@ -53,184 +38,97 @@ namespace DynabicPlatform.Tests
         [Test]
         public void GetUserById()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
+            Assert.AreEqual(_testData.UserId, user.Id);
         }
 
         [Test]
         public void GetUserByUserName()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                var user = _gateway.Users.GetUserByUserName(newUser.Email);
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
-        }
-
-        [Test]
-        public void AddAndDeleteUser()
-        {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            DeleteUser(newUser.Id);
+            var user = _gateway.Users.GetUserByUserName(_testData.UserEmail);
+            Assert.IsNotNull(user);
+            Assert.AreEqual(_testData.UserId, user.Id);
         }
 
         [Test]
         public void UpdateUser()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                // get existing user
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
-                // update user
-                var updateValue = "test user update";
-                user.FirstName = updateValue;
-                var updatedUser = _gateway.Users.UpdateUser(user, user.Id.ToString());
-                Assert.IsNotNull(updatedUser);
-                Assert.AreEqual(updateValue, updatedUser.FirstName);
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
+
+            // update user
+            var updateValue = "test user update";
+            user.FirstName = updateValue;
+            var updatedUser = _gateway.Users.UpdateUser(user, user.Id.ToString());
+            Assert.IsNotNull(updatedUser);
+            Assert.AreEqual(updateValue, updatedUser.FirstName);
         }
 
         [Test]
         public void SetDeletedStatus()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                // get existing user
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
 
-                // change deleted status
-                _gateway.Users.SetDeletedStatus(user.Id.ToString(), "true");
+            // change deleted status
+            _gateway.Users.SetDeletedStatus(user.Id.ToString(), "true");
 
-                var updatedUser = _gateway.Users.GetUserById(user.Id.ToString());
-                Assert.IsNotNull(updatedUser);
-                Assert.IsTrue(updatedUser.Deleted);
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            var updatedUser = _gateway.Users.GetUserById(user.Id.ToString());
+            Assert.IsNotNull(updatedUser);
+            Assert.IsTrue(updatedUser.Deleted);
         }
 
         [Test]
         public void SetActiveStatus()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                // get existing user
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
 
-                // change active status
-                _gateway.Users.SetActiveStatus(user.Id.ToString(), "false");
+            // change active status
+            _gateway.Users.SetActiveStatus(user.Id.ToString(), "false");
 
-                var updatedUser = _gateway.Users.GetUserById(user.Id.ToString());
-                Assert.IsNotNull(updatedUser);
-                Assert.IsFalse(updatedUser.Active);
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            var updatedUser = _gateway.Users.GetUserById(user.Id.ToString());
+            Assert.IsNotNull(updatedUser);
+            Assert.IsFalse(updatedUser.Active);
         }
 
         [Test]
         public void ResetPassword()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                // get existing user
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
 
-                // reset password
-                _gateway.Users.ResetPassword(user.Id.ToString());
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            // reset password
+            _gateway.Users.ResetPassword(user.Id.ToString());
         }
 
         [Test]
         public void ModifyPassword()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                _gateway.Users.ModifyPassword(newUser.Id.ToString(), "test123", "newpwd");
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            _gateway.Users.ModifyPassword(_testData.UserId.ToString(), "test123", "newpwd");
         }
 
         [Test]
         public void SetRoles()
         {
-            var newUser = AddUser();
-            Assert.IsNotNull(newUser);
-            try
-            {
-                // get existing user
-                var user = _gateway.Users.GetUserById(newUser.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(newUser.Id, user.Id);
+            // get existing user
+            var user = _gateway.Users.GetUserById(_testData.UserId.ToString());
+            Assert.IsNotNull(user);
+            Assert.AreEqual(_testData.UserId, user.Id);
 
-                // remove all roles
-                _gateway.Users.SetRoles(user.Id.ToString(), string.Empty);
+            // remove all roles
+            _gateway.Users.SetRoles(user.Id.ToString(), string.Empty);
 
-                user = _gateway.Users.GetUserById(user.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.IsEmpty(user.UserRoles);
+            user = _gateway.Users.GetUserById(user.Id.ToString());
+            Assert.IsNotNull(user);
+            Assert.IsEmpty(user.UserRoles);
 
-                // grant user to two roles
-                _gateway.Users.SetRoles(user.Id.ToString(), "user,admin");
-                user = _gateway.Users.GetUserById(user.Id.ToString());
-                Assert.IsNotNull(user);
-                Assert.AreEqual(user.UserRoles, "Admin,User");
-            }
-            finally
-            {
-                DeleteUser(newUser.Id);
-            }
+            // grant user to two roles
+            _gateway.Users.SetRoles(user.Id.ToString(), "user,admin");
+            user = _gateway.Users.GetUserById(user.Id.ToString());
+            Assert.IsNotNull(user);
+            Assert.AreEqual(user.UserRoles, "Admin,User");
         }
     }
 }

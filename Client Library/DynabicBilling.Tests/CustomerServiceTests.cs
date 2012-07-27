@@ -7,6 +7,7 @@ namespace DynabicBilling.Tests
     {
         private BillingGateway _gateway;
         private TestsHelper _testsHelper;
+        private TestDataValues _testData;
 
         #region Hardcoded values for Country, StateProvince tests
 
@@ -28,50 +29,21 @@ namespace DynabicBilling.Tests
         public void Init()
         {
 #if DEBUG
-            //_gateway = new BillingGateway(BillingEnvironment.QA, "ab274898ca864dd6a1f3", "3b0276bc893d479d8aee");
             _gateway = new BillingGateway(BillingEnvironment.DEVELOPMENT, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #else
             _gateway = new BillingGateway(BillingEnvironment.QA, Constants.PUBLIC_KEY, Constants.PRIVATE_KEY);
 #endif
             _testsHelper = new TestsHelper(_gateway);
+            _testData = _testsHelper.PrepareCustomersTestData();
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            _testsHelper.CleanupTestData();
         }
 
         #region Helpers
-
-        private class TestDataValues
-        {
-            public int SiteId { get; set; }
-            public string Subdomain { get; set; }
-            public int CustomerId { get; set; }
-            public string ReferenceId { get; set; }
-            public int CreditCardId { get; set; }
-            public int BillingAddressId { get; set; }
-        }
-
-        private TestDataValues PrepareTestData()
-        {
-            var testData = new TestDataValues();
-
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            testData.SiteId = site.Id;
-            testData.Subdomain = site.Subdomain;
-
-            var customer = _testsHelper.AddCustomer(site.Subdomain);
-            Assert.IsNotNull(customer);
-            testData.CustomerId = customer.Id;
-            testData.ReferenceId = customer.ReferenceId;
-
-            var creditCard = _testsHelper.AddCreditCard(customer.Id);
-            Assert.IsNotNull(creditCard);
-            testData.CreditCardId = creditCard.Id;
-
-            var address = _testsHelper.AddAddress(customer.Id);
-            Assert.IsNotNull(address);
-            testData.BillingAddressId = address.Id;
-
-            return testData;
-        }
 
         private void GetCountryByCode(string countryCode)
         {
@@ -83,132 +55,52 @@ namespace DynabicBilling.Tests
         #endregion Helpers
 
         #region Customers
-        /*
-        [Test]
-        public void __GetAllCustomers()
-        {
-            var customers = _gateway.Customer.GetAllCustomers("Banckle", ContentFormat.JSON);
-            //var customers = _gateway.Customer.GetAllCustomers("demoSubdomain", ContentFormat.JSON);
-            Assert.IsNotNull(customers);
-        }
-        */
+
         [Test]
         public void GetAllCustomers()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var customers = _gateway.Customer.GetAllCustomers(testData.Subdomain);
-                Assert.IsNotNull(customers);
-                foreach (var customer in customers)
-                {
-                    _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-                }
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var customers = _gateway.Customer.GetAllCustomers(_testData.Subdomain);
+            Assert.IsNotNull(customers);
         }
 
         [Test]
         public void GetCustomer()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var customer = _gateway.Customer.GetCustomer(testData.CustomerId.ToString());
-                Assert.IsNotNull(customer);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var customer = _gateway.Customer.GetCustomer(_testData.CustomerId.ToString());
+            Assert.IsNotNull(customer);
         }
 
         [Test]
         public void GetCustomerByReferenceId()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var customer = _gateway.Customer.GetCustomerByReferenceId(testData.Subdomain, testData.ReferenceId);
-                Assert.IsNotNull(customer);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var customer = _gateway.Customer.GetCustomerByReferenceId(_testData.Subdomain, _testData.ReferenceId);
+            Assert.IsNotNull(customer);
         }
 
         [Test]
         public void AddCustomer()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var customer = _gateway.Customer.GetCustomer(_testData.CustomerId.ToString());
+            Assert.IsNotNull(customer);
         }
 
         [Test]
         public void UpdateCustomer()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-                /*
-                var updateCustomer = new CustomerRequest
-                {
-                    Company = customer.Company + "_updated",
-                    Email = customer.Email,
-                    FirstName = customer.FirstName,
-                    IsShippingAddressEqualToBilling = customer.IsShippingAddressEqualToBilling,
-                    LastName = customer.LastName,
-                    Phone = customer.Phone,
-                    ReferenceId = customer.ReferenceId,
-                };
-                */
-                customer.Company += "_updated";
+            var customer = _gateway.Customer.GetCustomer(_testData.CustomerId.ToString());
+            Assert.IsNotNull(customer);
 
-                var updatedCustomer = _gateway.Customer.UpdateCustomer(customer, customer.Id.ToString());
-                Assert.IsNotNull(updatedCustomer);
-                Assert.AreEqual(customer.Company, updatedCustomer.Company);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            customer.Company += "_updated";
+
+            var updatedCustomer = _gateway.Customer.UpdateCustomer(customer, customer.Id.ToString());
+            Assert.IsNotNull(updatedCustomer);
+            Assert.AreEqual(customer.Company, updatedCustomer.Company);
         }
 
         [Test]
         public void DeleteCustomer()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            _gateway.Customer.DeleteCustomer(_testData.CustomerId.ToString());
         }
 
         #endregion Customers
@@ -218,95 +110,38 @@ namespace DynabicBilling.Tests
         [Test]
         public void GetCreditCard()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var creditCard = _gateway.Customer.GetCreditCard(testData.CreditCardId.ToString());
-                Assert.IsNotNull(creditCard);
-
-                _gateway.Customer.DeleteCustomer(testData.CustomerId.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var creditCard = _gateway.Customer.GetCreditCard(_testData.CreditCardId.ToString());
+            Assert.IsNotNull(creditCard);
         }
 
         [Test]
         public void GetCreditCards()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var creditCards = _gateway.Customer.GetCreditCards(testData.CustomerId.ToString());
-                Assert.IsNotNull(creditCards);
-                Assert.AreEqual(1, creditCards.Count);
-                _gateway.Customer.DeleteCustomer(testData.CustomerId.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var creditCards = _gateway.Customer.GetCreditCards(_testData.CustomerId.ToString());
+            Assert.IsNotNull(creditCards);
+            Assert.AreEqual(1, creditCards.Count);
         }
 
         [Test]
         public void AddAndDeleteCreditCard()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-                try
-                {
-                    var creditCard = _testsHelper.AddCreditCard(customer.Id);
-                    Assert.IsNotNull(creditCard);
-                }
-                finally
-                {
-                    _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-                }
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var creditCard = _testsHelper.AddCreditCard(_testData.CustomerId);
+            Assert.IsNotNull(creditCard);
+            _gateway.Customer.DeleteCreditCard(_testData.CustomerId.ToString(), creditCard.Id.ToString());
         }
 
         [Test]
         public void UpdateCreditCard()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
+            var creditCard = _gateway.Customer.GetCreditCard(_testData.CreditCardId.ToString());
+            Assert.IsNotNull(creditCard);
 
-                var creditCard = _testsHelper.AddCreditCard(customer.Id);
-                Assert.IsNotNull(creditCard);
-                /*
-                var updateCreditCard = new CreditCardRequest
-                {
-                    Cvv = creditCard.Cvv + "_updated",
-                    ExpirationDate = creditCard.ExpirationDate,
-                    FirstNameOnCard = creditCard.FirstNameOnCard,
-                    LastNameOnCard = creditCard.LastNameOnCard,
-                    Number = creditCard.Number,
-                };
-                */
-                creditCard.FirstNameOnCard += "_updated";
+            creditCard.FirstNameOnCard += "_updated";
 
-                var updatedCreditCard = _gateway.Customer.UpdateCreditCard(customer.Id.ToString(), creditCard.Id.ToString(), creditCard);
-                Assert.IsNotNull(updatedCreditCard);
-                Assert.AreEqual(creditCard.FirstNameOnCard, updatedCreditCard.FirstNameOnCard);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var updatedCreditCard = _gateway.Customer.UpdateCreditCard(_testData.CustomerId.ToString(), creditCard.Id.ToString(), creditCard);
+            Assert.IsNotNull(updatedCreditCard);
+
+            Assert.AreEqual(creditCard.FirstNameOnCard, updatedCreditCard.FirstNameOnCard);
         }
 
         #endregion CreditCards
@@ -316,126 +151,59 @@ namespace DynabicBilling.Tests
         [Test]
         public void GetBillingAddresses()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var addresses = _gateway.Customer.GetBillingAddresses(testData.CustomerId.ToString());
-                Assert.IsNotNull(addresses);
-                Assert.AreEqual(1, addresses.Count);
-                _gateway.Customer.DeleteCustomer(testData.CustomerId.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var addresses = _gateway.Customer.GetBillingAddresses(_testData.CustomerId.ToString());
+            Assert.IsNotNull(addresses);
+            Assert.AreEqual(1, addresses.Count);
         }
 
         [Test]
         public void GetBillingAddress()
         {
-            var testData = PrepareTestData();
-            try
-            {
-                var address = _gateway.Customer.GetBillingAddress(testData.CustomerId.ToString());
-                Assert.IsNotNull(address);
-                _gateway.Customer.DeleteCustomer(testData.CustomerId.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(testData.SiteId);
-            }
+            var address = _gateway.Customer.GetBillingAddress(_testData.CustomerId.ToString());
+            Assert.IsNotNull(address);
         }
 
         [Test]
         public void AddBillingAddress()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-
-                var address = _testsHelper.AddAddress(customer.Id);
-                Assert.IsNotNull(address);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var address = _testsHelper.AddAddress(_testData.CustomerId);
+            Assert.IsNotNull(address);
+            _gateway.Customer.DeleteBillingAddress(_testData.CustomerId.ToString(), address.Id.ToString());
         }
 
         [Test]
         public void UpdateBillingAddress()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
+            var address = _gateway.Customer.GetBillingAddress(_testData.CustomerId.ToString());
+            Assert.IsNotNull(address);
 
-                var address = _testsHelper.AddAddress(customer.Id);
-                Assert.IsNotNull(address);
-                address.Address1 += "_updated";
+            address.Address1 += "_updated";
 
-                var updatedAddress = _gateway.Customer.UpdateBillingAddress(customer.Id.ToString(), address.Id.ToString(), address);
-                Assert.IsNotNull(updatedAddress);
-                Assert.AreEqual(address.Address1, updatedAddress.Address1);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var updatedAddress = _gateway.Customer.UpdateBillingAddress(_testData.CustomerId.ToString(), address.Id.ToString(), address);
+            Assert.IsNotNull(updatedAddress);
+            Assert.AreEqual(address.Address1, updatedAddress.Address1);
         }
 
         [Test]
         public void UpdateBillingAddressByCustomerRefId()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
+            var address = _gateway.Customer.GetBillingAddress(_testData.CustomerId.ToString());
+            Assert.IsNotNull(address);
 
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
+            address.Address1 += "_updated";
 
-                var address = _testsHelper.AddAddress(customer.Id);
-                Assert.IsNotNull(address);
-                address.Address1 += "_updated";
-
-                var updatedAddress = _gateway.Customer.UpdateBillingAddressByCustomerReferenceId(site.Subdomain,
-                    customer.ReferenceId, address.Id.ToString(), address);
-                Assert.IsNotNull(updatedAddress);
-                Assert.AreEqual(address.Address1, updatedAddress.Address1);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var updatedAddress = _gateway.Customer.UpdateBillingAddressByCustomerReferenceId(_testData.Subdomain,
+                _testData.ReferenceId, address.Id.ToString(), address);
+            Assert.IsNotNull(updatedAddress);
+            Assert.AreEqual(address.Address1, updatedAddress.Address1);
         }
 
         [Test]
         public void DeleteBillingAddress()
         {
-            var site = _testsHelper.AddSite();
-            Assert.IsNotNull(site);
-            try
-            {
-                var customer = _testsHelper.AddCustomer(site.Subdomain);
-                Assert.IsNotNull(customer);
-
-                var address = _testsHelper.AddAddress(customer.Id);
-                Assert.IsNotNull(address);
-                _gateway.Customer.DeleteCustomer(customer.Id.ToString());
-            }
-            finally
-            {
-                _testsHelper.DeleteSite(site.Id);
-            }
+            var address = _testsHelper.AddAddress(_testData.CustomerId);
+            Assert.IsNotNull(address);
+            _gateway.Customer.DeleteBillingAddress(_testData.CustomerId.ToString(), address.Id.ToString());
         }
 
         #endregion BillingAddresses
