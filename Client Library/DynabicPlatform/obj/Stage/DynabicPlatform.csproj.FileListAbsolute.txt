@@ -1,8 +1,0 @@
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\bin\Stage\DynabicPlatform-1.0.0.dll
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\bin\Stage\DynabicPlatform-1.0.0.pdb
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\bin\Stage\Microsoft.Http.dll
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\bin\Stage\Microsoft.Http.Extensions.dll
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\bin\Stage\Newtonsoft.Json.dll
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\obj\Stage\DynabicPlatform.csprojResolveAssemblyReference.cache
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\obj\Stage\DynabicPlatform-1.0.0.dll
-c:\Tmp\TeamCityBuild\Dynabic.Billing\trunk\src\StarterKit\.Net\Client Library\DynabicPlatform\obj\Stage\DynabicPlatform-1.0.0.pdb
