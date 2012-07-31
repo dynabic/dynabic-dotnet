@@ -1,0 +1,1154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DynabicPlatform-1.0.0</name>
+    </assembly>
+    <members>
+        <member name="T:DynabicPlatform.Classes.PlatformGateway">
+             <summary>
+             This is the primary interface to the DynabicPlatform Gateway.
+             </summary>
+             <remarks>
+             This class interact with:
+             <ul>
+             <li><see cref="T:DynabicPlatform.Services.ApplicationService">Application</see></li>
+             <li><see cref="T:DynabicPlatform.Services.CompanyInfoService">CompanyInfo</see></li>
+             <li><see cref="T:DynabicPlatform.Services.EventService">Events</see></li>
+             <li><see cref="T:DynabicPlatform.Services.SettingService">Settings</see></li>
+             <li><see cref="T:DynabicPlatform.Services.SiteService"></see>Sites</li>
+             <li><see cref="T:DynabicPlatform.Services.UserService"></see>Users</li>
+             </ul>  
+             </remarks>
+             <example>
+             Quick Start Example:
+             <code>
+             using System;
+             using DynabicPlatform;
+            
+             namespace DynabicPlatformExample
+             {
+                 class Program
+                 {
+                     static void Main(string[] args)
+                     {
+                         var gateway = new PlatformGateway
+                         {
+                             Environment = Environment.PRODUCTION,
+                             PublicKey = "a_public_key",
+                             PrivateKey = "a_private_key"
+                         };
+            
+                         var request = new SubscriptionRequest
+                         {
+                             ProductId = 11,
+                             ...
+                             CustomerRequest = new CustomerRequest
+                             {
+                                 Name = "John Doe",
+                                 ...
+                             }
+                         };
+            
+                         SubscriptionResponse subscription = gateway.Subscription.Create(request);
+            
+                         Console.WriteLine(String.Format("Subscription ID: {0}", subscription.Id));
+                         Console.WriteLine(String.Format("Status: {0}", subscription.Status));
+                     }
+                 }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationInCompanyResponse.Id">
+            <summary>
+            Unique identifier of Application in Company. It is generated and managed by database.
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationInCompanyResponse.ApplicationId">
+            <summary>
+            Application's unique identifier
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationInCompanyResponse.AddedOn">
+            <summary>
+            Date when the Application was added to the Company
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationInCompanyResponse.UpdatedOn">
+            <summary>
+            Date when the Application was last time updated
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationInCompanyResponse.IsActive">
+            <summary>
+            Shows if the Application is active
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.ApplicationResponse">
+            <summary>
+            An Dynabic Platform Application.
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationResponse.Id">
+            <summary>
+            Application's unique identifier
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationResponse.Name">
+            <summary>
+            Application's name
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.ApplicationPlan">
+            <summary>
+            Pricing plan used for an Application
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.ApplicationId">
+            <summary>
+            Id of the Application to which it refers
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.ProductId">
+            <summary>
+            Id of the Product to which is attached the Pricing Plan
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.Name">
+            <summary>
+            Name of the Application's Plan
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.Description">
+            <summary>
+            Description of the Application's Plan
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.CurrencyCode">
+            <summary>
+            Code of the Currency used in Application's Plan
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.ApplicationPlan.SubscriptionPeriodCharge">
+            <summary>
+            Amount of money charged for subscription period
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.CompanyInfoRequest">
+            <summary>
+            Info about a Company used as requests from users
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.CompanyInfoResponse.Id">
+            <summary>
+            Company's unque identifier
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.EventResponse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.Id">
+            <summary>
+            Event's unique identifier. It is generated and managed by database
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.EventType">
+            <summary>
+            Type of the Event
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.EventResult">
+            <summary>
+            Result of the Event
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.Date">
+            <summary>
+            Date when the Event occured
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.SiteId">
+            <summary>
+            Id of the Site in which the Event occured
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventResponse.EventParams">
+            <summary>
+            A list of Event parameters
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.EventParam">
+            <summary>
+            Event parameter
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventParam.Id">
+            <summary>
+            Id of the Event parameter
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.EventParam.Value">
+            <summary>
+            Value of the Event parameter
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.EventParamList">
+            <summary>
+            A list of Event parameters represented as a collection of EventParam objects
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.EventsList">
+            <summary>
+            A list of Events represented as a collection of EventResponse objects
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.EventType">
+            <summary>
+            Classifies the event
+            </summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.All">
+            <summary>All events will be shown.</summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.Signup">
+            <summary>Users have created a new account.</summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.AccountCancellation">
+            <summary>Users have cancelled an account.</summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.SubscriptionRenewal">
+            <summary>Subscription renewed.</summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.CustomerMailError">
+            <summary>Mail error log item type</summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.SubscriptionCancelled">
+            <summary> Subscription cancelled </summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.ExpiringCreditCard">
+            <summary> A Credit Card has entered the 'expiring' period (usually last 30 days of availability) </summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.SubscriptionProductUpdated">
+            <summary> The Product that corresponds to a subscription has been updated </summary>
+        </member>
+        <member name="F:DynabicPlatform.RestApiDataContract.EventType.SubscriptionActivated">
+            <summary> A Subscription's status was switched from Trial to Active </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SettingBase.SiteId">
+            <summary>
+            Id of the Site to which the Setting is set
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SettingBase.Name">
+            <summary>
+            Name of the Setting
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SettingBase.Value">
+            <summary>
+            Value of the Setting
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SettingBase.Description">
+            <summary>
+            Description of the Setting. A text memo that describes the Setting's purpouse
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SettingRequest">
+            <summary>
+            Setting for a Dynabic Site. Used as user's request for Create and Update operations.
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SettingResponse">
+            <summary>
+            Setting for a Dynabic Site. Used as Response to user's requests
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SettingResponse.SettingId">
+            <summary>
+            Setting's unique identifier
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SettingsList">
+            <summary>
+            A list of Settings represented a collection of SettingsResponse
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteBase.Name">
+            <summary>
+            Site's name. Used to distinguish Site's in UI
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteBase.Subdomain">
+            <summary>
+            Site's subdomain. Used as subdomain name in URL to access the site
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteBase.IsTestMode">
+            <summary>
+            Specifies if the Site is in Test or Production mode
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SiteRequest">
+            <summary>
+            Dynabic Site. Used in user's requests for Create and Update operations.
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SiteResponse">
+            <summary>
+            Dynabic Site. Used as response to user's requests.
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteResponse.Id">
+            <summary>
+            Site's unique identifier. It is generated and managed by database
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteResponse.Revenue">
+            <summary>
+            Total amount of revenues from the Site
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.SiteResponse.CompanyInfoId">
+            <summary>
+            Id of the Company to which the Site belongs to
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.SitesList">
+            <summary>
+            A list of Sites represented as a collection of SiteResponse objects
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.UserBase">
+            <summary>
+            Dynabic User.
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Email">
+            <summary>
+            User's email address
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.FirstName">
+            <summary>
+            User's first name
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.LastName">
+            <summary>
+            User's last name
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Active">
+            <summary>
+            Specifies if the User is active or not
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Deleted">
+            <summary>
+            Specifies if the User is marked as deleted
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.IsSubscribedToNewsletter">
+            <summary>
+            Specifies if the User is subscribed to News Lettes
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Culture">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Country">
+            <summary>
+            User's Country
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.TimeZoneOffset">
+            <summary>
+            User's time zone
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.Currency">
+            <summary>
+            User's Currency
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.FacebookId">
+            <summary>
+            User's Facebook email address
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.GoogleAppsUserName">
+            <summary>
+            User's Google apps. email address or username
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.YahooUserName">
+            <summary>
+            User's Yahoo email address
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserBase.UserRoles">
+            <summary>
+            A list of comma separated Roles
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.UserRequest">
+            <summary>
+            Dynabic User. Used in user's request for Create and Update operations
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.UserResponse">
+            <summary>
+            Dynabic User. Used in reaponse to user's request
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserResponse.Id">
+            <summary>
+            User's unique identifier. It is generated and managed by the database
+            </summary>
+        </member>
+        <member name="P:DynabicPlatform.RestApiDataContract.UserResponse.RegistrationDate">
+            <summary>
+            Date when the User was registered at Dynabic
+            </summary>
+        </member>
+        <member name="T:DynabicPlatform.RestApiDataContract.UsersList">
+            <summary>
+            A list of DynabicUsers represented as a collection of UserResponse objects
+            </summary>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.GetAllApplications(System.String)">
+            <summary>
+            Retrievs all Applications supported by Dynabic DynabicPlatform.
+            </summary>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns>An ApplicationsList object containing all requested Applications.</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.GetCompanyApplications(System.String)">
+            <summary>
+            Retrievs all Applications used by Company.
+            </summary>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns>An ApplicationsInCompanyList object containing all requested Applications.</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.GetCompanyApplicationById(System.String,System.String)">
+            <summary>
+            Retrievs an Application by Id.
+            </summary>
+            <param name="applicationId">The Application's unique identifier.</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns>An ApplicationInCompanyBase object containing the requested  Application</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.GetCompanyApplicationByName(System.String,System.String)">
+            <summary>
+            Gets an ApplicationInCompany by Application name
+            </summary>
+            <param name="appName"> The Name of the Application </param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns> An ApplicationInCompanyResponse object that corresponds to the specified Company Id and Application Name </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.GetApplicationCurrentPlan(System.String,System.String)">
+            <summary>
+            Retrievs the PricingPlan used for the Application
+            </summary>
+            <param name="applicationId">The Application's unique identifier.</param>
+            <param name="format">The format used for the data transfer (XML or JSON) </param>
+            <returns>
+            An ApplicationPlan object containing currently selected Pricing Plan for requested Application.
+            The current plan
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IApplicationsService.SetApplicationStatus(System.String,System.String)">
+            <summary>
+            Sets the application active status.
+            </summary>
+            <param name="applicationId">The application id.</param>
+            <param name="status">The active status.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ICompanyInfoService.GetCompanyInfo(System.String)">
+            <summary>
+            Retrieves Company info by it's API key
+            </summary>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns>A CompanyInfoResponse object containing all information about a Company.</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ICompanyInfoService.UpdateCompanyInfo(DynabicPlatform.RestApiDataContract.CompanyInfoRequest,System.String)">
+            <summary>
+            Updates information for a Company
+            </summary>
+            <param name="updatedCompanyInfo">The CompanyInfoRequest object containing information to be updated.</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns>A CompanyInfoResponse object that corresponds to the updated CompanyInfo</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IDynabicMarketingPlansService.SetActiveMarketingPlan(System.String)">
+            <summary>
+            S
+            </summary>
+            <param name="productId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IEventsService.GetEventsForSubscription(System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets all Events that correspond to a specific Subscription
+            </summary>
+            <param name="subscriptionId"> Subscription's unique identifier </param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <param name="pageNumber">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).
+            </param>
+            <param name="pageSize">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).
+            </param>
+            <returns> An EventList object containing all Event objects that correspond to the specified Subscription </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IEventsService.GetEventsForSubscriptionBetweenDates(System.String,System.String,System.String,System.String)">
+            <summary>
+            Returns a list with the latest events for a subscription between the given dates.
+            </summary>
+            <param name="subscriptionId">The subscription id.</param>
+            <param name="fromDate">The start date.</param>
+            <param name="toDate">The end date. If the end date is not specified the current date will be used.</param>
+            <param name="format">The format.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IEventsService.GetEvent(System.String,System.String)">
+            <summary>
+            Gets the event.
+            </summary>
+            <param name="eventId">The event id.</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IEventsService.GetEventsForSite(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets all Events that correspond to a specific Site
+            </summary>
+            <param name="siteId">Site's unique identifier</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <param name="eventTypeFilter">The event type filter.</param>
+            <param name="pageNumber">Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).</param>
+            <param name="pageSize">Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).</param>
+            <returns>
+            An EventList object containing all Event objects that correspond to the specified Site
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IEventsService.GetEvents(System.String,System.String,System.String)">
+            <summary>
+            Returns a list with the latest events.
+            </summary>
+            <param name="format">The format.</param>
+            <param name="eventTypeFilter">The event type filter.</param>
+            <param name="numberOfReturnedEvents">The number of returned events.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.GetSettings(System.String,System.String)">
+            <summary>
+            Retrieves all set Settings for a Site
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Settings are set. </param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>A SettingsList object containing all Settings for a Site</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.GetSettingById(System.String,System.String,System.String)">
+            <summary>
+            Retrieves a Setting for a Site based on the Setting.Id
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Settings are set. </param>
+            <param name="settingId">Setting's unique identifier</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>A SettingResponse object containing the requested Setting</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.GetSettingByName(System.String,System.String,System.String)">
+            <summary>
+            Retrieves a Setting for a Site based on the Setting.Id
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Settings are set. </param>
+            <param name="settingName">Setting's name</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>A SettingResponse object containing the requested Setting</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.UpdateSetting(System.String,System.String,DynabicPlatform.RestApiDataContract.SettingRequest,System.String)">
+            <summary>
+            Updates a Setting for a Site.
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Setting is set. </param>
+            <param name="settingId">Setting's unique identifier to update</param>
+            <param name="settingRequest">SettingResquest object containing information about the Setting to update</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns> A SettingResponse object containing information about the updated Setting.</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.UpdateSettingWithExplicitParameters(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Updates a Setting for a Site.
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Setting is set. </param>
+            <param name="settingId">Setting's unique identifier to update</param>
+            <param name="settingName">Setting's name</param>
+            <param name="settingValue">Setting's values</param>
+            <param name="settingDescription">(Optional).A memo text describing the Setting's purpouse.</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns> A SettingResponse object containing information about the updated Setting.</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.UpdateSettingWithExplicitParameters2(System.String,System.String,System.String,System.String)">
+            <summary>
+            Updates a Setting for a Site.
+            </summary>
+            <param name="siteSubdomain">The subdomain of the Site for which Setting is set. </param>
+            <param name="settingId">Setting's unique identifier to update</param>
+            <param name="settingValue">Setting's values</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns> A SettingResponse object containing information about the updated Setting.</returns>        
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISettingsService.GetDefaultSetting(System.String,System.String)">
+            <summary>
+            Retrieves a Default Setting using Setting's name
+            </summary>
+            <param name="settingName">Name of the Setting</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>A SettingResponse object containing the requested Setting</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.GetSites(System.String,System.String,System.String)">
+            <summary>
+            Retrieves all Sites belonging a Company
+            </summary>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <param name="pageNumber">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).
+            </param>
+            <param name="pageSize">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).
+            </param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.GetSiteById(System.String,System.String)">
+            <summary>
+            Retrives a Site using Site's unique identifier Site.Id
+            </summary>
+            <param name="siteId"> The Id of the Site to retrieve </param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <returns> A SiteResponse object that corresponds to the specified Id </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.GetSiteBySubdomain(System.String,System.String)">
+            <summary>
+            Retrives a Site using Site's subdomain
+            </summary>
+            <param name="siteSubdomain"> The subdomain of the Site to retrieve </param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <returns> A SiteResponse object that corresponds to the specified subdomain </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.GetSitesByName(System.String,System.String)">
+            <summary>
+            Retrives a Site using Site's name
+            </summary>
+            <param name="siteName"> The name of the Site </param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <returns> A SiteResponse object that corresponds to the specified name </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.AddSite(DynabicPlatform.RestApiDataContract.SiteRequest,System.String)">
+            <summary>
+            Adds a new Site
+            </summary>
+            <param name="newSite"> The Site to be added </param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <returns> The SiteResponse object that corresponds to the newly-added Site </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.UpdateSite(DynabicPlatform.RestApiDataContract.SiteRequest,System.String,System.String)">
+            <summary>
+            Updates an existing Site
+            </summary>
+            <param name="updatedSite">The Site to be updated</param>
+            <param name="siteId">The Site's unique identifier to be updated.</param>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <returns>
+            The SiteResponse object that corresponds to the newly-updated Site
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.ISitesService.DeleteSite(System.String)">
+            <summary>
+            Deletes a Site
+            </summary>
+            <param name="siteId"> The Site's unque identifier to be deleted.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.GetAllUsers(System.String,System.String,System.String)">
+            <summary>
+            Retrieves all Users in a Company
+            </summary>
+            <param name="format"> The format used for the data transfer (XML or JSON). </param>
+            <param name="pageNumber">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).
+            </param>
+            <param name="pageSize">
+            Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).
+            </param>
+            <returns>A UsersList object containing all Users in the Company</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.GetUserById(System.String,System.String)">
+            <summary>
+            Retrieves a User by it's unique identifier
+            </summary>
+            <param name="userId">The Id of the User</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>A UserResponse object that corresponds to the specified Id</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.GetUserByUserName(System.String,System.String)">
+            <summary>
+            Retrieves a User by User.Name.
+            </summary>
+            <param name="userName"> The username may be: E-mail, Google apps. UserName, Yahoo UserName or Facebook Id. </param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns> A UserResponse object that corresponds to the specified username </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.GetUserApiKeys(System.String,System.String)">
+            <summary>
+            Gets the user API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.AddUser(DynabicPlatform.RestApiDataContract.UserRequest,System.String)">
+            <summary>
+            Adds a new User
+            </summary>
+            <param name="user">The User to be added</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns>The UserResponse object that corresponds to the newly-added User</returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.UpdateUser(DynabicPlatform.RestApiDataContract.UserRequest,System.String,System.String)">
+            <summary>
+            Updates an existing User
+            </summary>
+            <param name="updatedUser">The User to be updated</param>
+            <param name="userId">The User's unique identifier to be updated.</param>
+            <param name="format">The format used for the data transfer (XML or JSON). </param>
+            <returns> A UserResponse object that corresponds to the updated User </returns>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.DeleteUser(System.String)">
+            <summary>
+            Deletes a User
+            </summary>
+            <param name="userId">The Id of the user to be deleted</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.SetDeletedStatus(System.String,System.String)">
+            <summary>
+            Mark a User as deleted or undeleted (but does not actually delete it from the database).
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="status">The deleted status.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.SetActiveStatus(System.String,System.String)">
+            <summary>
+            Activates or Deactivates a User
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="status">The active status.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.ResetPassword(System.String)">
+            <summary>
+            Resets the User's password.
+            </summary>
+            <param name="userId">The Id of the User.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.ModifyPassword(System.String,System.String,System.String)">
+            <summary>
+            Modifies the User's password.
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="oldPassword">The User's old password.</param>
+            <param name="newPassword">The User's new password.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.SetRoles(System.String,System.String)">
+            <summary>
+            Sets the roles to user.
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="roles">The comma separated list of the roles.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.DeleteApiKeys(System.String)">
+            <summary>
+            Deletes the API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+        </member>
+        <member name="M:DynabicPlatform.RestAPI.RestInterfaces.IUsersService.GenerateNewApiKeys(System.String,System.String)">
+            <summary>
+            Generates the new API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="format">The format.</param>
+        </member>
+        <member name="T:DynabicPlatform.Services.ApplicationService">
+            <summary>
+            Provides operations for finding and updating applications
+            </summary>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.GetAllApplications(System.String)">
+            <summary>
+            Gets all applications supported by Dynabic Platform.
+            </summary>
+            <param name="format">The format of the response.</param>
+            <returns>A list of applications.</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.GetCompanyApplications(System.String)">
+            <summary>
+            Gets the list of applications in company.
+            </summary>
+            <param name="format">The format of the response.</param>
+            <returns>A list of applications.</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.GetCompanyApplicationById(System.String,System.String)">
+            <summary>
+            Gets the company application by id.
+            </summary>
+            <param name="applicationId">The application id.</param>
+            <param name="format">The response format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.GetCompanyApplicationByName(System.String,System.String)">
+            <summary>
+            Gets an ApplicationInCompany by Application name
+            </summary>
+            <param name="appName"> The Name of the Application </param>
+            <param name="format"> The response format </param>
+            <returns> An ApplicationInCompanyResponse object that corresponds to the specified Company Id and Application Name </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.GetApplicationCurrentPlan(System.String,System.String)">
+            <summary>
+            Gets the application current plan.
+            </summary>
+            <param name="applicationId">The application id.</param>
+            <param name="format">The response format.</param>
+            <returns>
+            The current plan
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.ApplicationService.SetApplicationStatus(System.String,System.String)">
+            <summary>
+            Sets the application active status.
+            </summary>
+            <param name="applicationId">The application id.</param>
+            <param name="status">The active status.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.CompanyInfoService.GetCompanyInfo(System.String)">
+            <summary>
+            Gets a Company info by API key
+            </summary>
+            <param name="format">The format of the Response</param>
+            <returns>A CompanyInfo object</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.CompanyInfoService.UpdateCompanyInfo(DynabicPlatform.RestApiDataContract.CompanyInfoRequest,System.String)">
+            <summary>
+            Updates the CompanyInfo
+            </summary>
+            <param name="updatedCompanyInfo">The CompanyInfo to be updated</param>
+            <param name="format">The format of the Response</param>
+            <returns>A CompanyInfoResponse object that corresponds to the updated CompanyInfo</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.DynabicMarketingPlansService.SetActiveMarketingPlan(System.String)">
+            <summary>
+            Activates the marketing plan.
+            </summary>
+            <param name="productId">The product id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.EventService.GetEventsForSubscription(System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets all Events that correspond to a specific Subscription
+            </summary>
+            <param name="subscriptionId">Subscription's unique identifier</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <param name="pageNumber">Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).</param>
+            <param name="pageSize">Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).</param>
+            <returns>
+            An EventList object containing all Event objects that correspond to the specified Subscription
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.EventService.GetEventsForSubscriptionBetweenDates(System.String,System.String,System.String,System.String)">
+            <summary>
+            Returns a list with the latest events for a subscription between the given dates.
+            </summary>
+            <param name="subscriptionId">The subscription id.</param>
+            <param name="fromDate">The start date.</param>
+            <param name="toDate">The end date. If the end date is not specified the current date will be used.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.EventService.GetEvent(System.String,System.String)">
+            <summary>
+            Gets the event.
+            </summary>
+            <param name="eventId">The event id.</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.EventService.GetEventsForSite(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets all Events that correspond to a specific Site
+            </summary>
+            <param name="siteId">Site's unique identifier</param>
+            <param name="format">The format used for the data transfer (XML or JSON).</param>
+            <param name="eventTypeFilter">The event type filter.</param>
+            <param name="pageNumber">Optional parameter to be used when a paged response is expected.
+            Use it to specify the index of the page to be retrieved (this value has to be greater than or equal to 1).</param>
+            <param name="pageSize">Optional parameter to be used when a paged response is expected.
+            Use it to specify the number of records a page should contain (this value has to be greater than or equal to 1).</param>
+            <returns>
+            An EventList object containing all Event objects that correspond to the specified Site
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.EventService.GetEvents(System.String,System.String,System.String)">
+            <summary>
+            Returns a list with the latest events.
+            </summary>
+            <param name="format">The format.</param>
+            <param name="eventTypeFilter">The event type filter.</param>
+            <param name="numberOfReturnedEvents">The number of returned events.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.GetSettings(System.String,System.String)">
+            <summary>
+            Gets a list of Settings for a Site
+            </summary>
+            <param name="siteSubdomain">Site's subdomain</param>
+            <param name="format">Format of the Response</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.GetSettingById(System.String,System.String,System.String)">
+            <summary>
+            Gets a Setting for a Site based on the Setting.Id
+            </summary>
+            <param name="siteSubdomain">Site's subdomain</param>
+            <param name="settingId">ID of the Setting as Int32 Value</param>
+            <param name="format">Format of the Response</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.GetSettingByName(System.String,System.String,System.String)">
+            <summary>
+            Gets a Setting for a Site based on the Setting.Name
+            </summary>
+            <param name="siteSubdomain">Site's subdomain</param>
+            <param name="settingName">Name of the Setting</param>
+            <param name="format">Format of the Response</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.UpdateSetting(System.String,System.String,DynabicPlatform.RestApiDataContract.SettingRequest,System.String)">
+            <summary>
+            Updates the setting.
+            </summary>
+            <param name="siteSubdomain">The site subdomain.</param>
+            <param name="settingId">The setting id.</param>
+            <param name="settingRequest">The setting request.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.UpdateSettingWithExplicitParameters(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Updates the setting with explicit parameters.
+            </summary>
+            <param name="siteSubdomain">The site subdomain.</param>
+            <param name="settingId">The setting id.</param>
+            <param name="settingName">Name of the setting.</param>
+            <param name="settingValue">The setting value.</param>
+            <param name="settingDescription">The setting description.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.UpdateSettingWithExplicitParameters2(System.String,System.String,System.String,System.String)">
+            <summary>
+            Updates the setting with explicit parameters2.
+            </summary>
+            <param name="siteSubdomain">The site subdomain.</param>
+            <param name="settingId">The setting id.</param>
+            <param name="settingValue">The setting value.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SettingService.GetDefaultSetting(System.String,System.String)">
+            <summary>
+            Gets the default settings.
+            </summary>
+            <param name="settingName">Name of the setting.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.GetSites(System.String,System.String,System.String)">
+            <summary>
+            Gets all Sites for a Company
+            </summary>
+            <param name="format"> The format of the Response </param>
+            <param name="pageNumber">The page number (Optional parameter, if is specified should be equal or greater than 1).</param>
+            <param name="pageSize">Size of the page (Optional parameter, if is specified should be equal or greater than 1).</param>
+            <returns> A SitesList object contaning all Sites in the Company </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.GetSiteById(System.String,System.String)">
+            <summary>
+            Gets a Site, by Id
+            </summary>
+            <param name="siteId"> The Id of the Site </param>
+            <param name="format"> The format of the Response </param>
+            <returns> A SiteResponse object that corresponds to the specified Id </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.GetSiteBySubdomain(System.String,System.String)">
+            <summary>
+            Gets a Site, by Subdomain
+            </summary>
+            <param name="siteSubdomain"> The Subdomain of the Site </param>
+            <param name="format"> The format of the Response </param>
+            <returns> A SiteResponse object that corresponds to the specified Subdomain </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.GetSitesByName(System.String,System.String)">
+            <summary>
+            Gets a Site, by Name
+            </summary>
+            <param name="siteName"> The Name of the Site </param>
+            <param name="format"> The format of the Response </param>
+            <returns> A SiteResponse object that corresponds to the specified Name </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.AddSite(DynabicPlatform.RestApiDataContract.SiteRequest,System.String)">
+            <summary>
+            Adds a new Site
+            </summary>
+            <param name="newSite"> The Site to be added </param>
+            <param name="format"> The format of the Response </param>
+            <returns> The SiteResponse object that corresponds to the newly-added Site </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.UpdateSite(DynabicPlatform.RestApiDataContract.SiteRequest,System.String,System.String)">
+            <summary>
+            Updates an existing Site
+            </summary>
+            <param name="updatedSite">The Site to be updated</param>
+            <param name="siteId">The site id.</param>
+            <param name="format">The format of the Response</param>
+            <returns>
+            The SiteResponse object that corresponds to the newly-updated Site
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.SiteService.DeleteSite(System.String)">
+            <summary>
+            Deletes a Site
+            </summary>
+            <param name="siteId">The site id.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.GetAllUsers(System.String,System.String,System.String)">
+            <summary>
+            Gets all Users in a Company
+            </summary>
+            <param name="format">The format of the Response</param>
+            <param name="pageNumber">The page number (Optional parameter, if is specified should be equal or greater than 1).</param>
+            <param name="pageSize">Size of the page (Optional parameter, if is specified should be equal or greater than 1).</param>
+            <returns>A UsersList object containing all users in the Company</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.GetUserById(System.String,System.String)">
+            <summary>
+            Gets a User by Id
+            </summary>
+            <param name="userId">The Id of the User</param>
+            <param name="format">The format of the Response</param>
+            <returns>A UserResponse object that corresponds to the specified Id</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.GetUserByUserName(System.String,System.String)">
+            <summary>
+            Gets the user by UserName.
+            </summary>
+            <param name="userName">
+            The userName may be: E-mail, Google apps. UserName, Yahoo UserName or Facebook Id.
+            </param>
+            <param name="format">The format of the Response</param>
+            <returns>
+            A UserResponse object that corresponds to the specified UserName
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.AddUser(DynabicPlatform.RestApiDataContract.UserRequest,System.String)">
+            <summary>
+            Adds a new User
+            </summary>
+            <param name="user">The User to be added</param>
+            <param name="format">The format of the Response</param>
+            <returns>The UserResponse object that corresponds to the newly-added User</returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.UpdateUser(DynabicPlatform.RestApiDataContract.UserRequest,System.String,System.String)">
+            <summary>
+            Updates an existing User
+            </summary>
+            <param name="updatedUser">The User to be updated</param>
+            <param name="userId">The user id.</param>
+            <param name="format">The format of the Response</param>
+            <returns>
+            A UserResponse object that corresponds to the updated User
+            </returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.DeleteUser(System.String)">
+            <summary>
+            Deletes a User
+            </summary>
+            <param name="userId">The Id of the user to be deleted</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.SetDeletedStatus(System.String,System.String)">
+            <summary>
+            Mark a user as deleted or undelited (but does not actually delete it from the database).
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="status">The deleted status.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.SetActiveStatus(System.String,System.String)">
+            <summary>
+            Activates of Deactivates a user
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="status">The active status.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.ResetPassword(System.String)">
+            <summary>
+            Resets the user password.
+            </summary>
+            <param name="userId">The Id of the User.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.ModifyPassword(System.String,System.String,System.String)">
+            <summary>
+            Modifies the user password.
+            </summary>
+            <param name="userId">The Id of the User.</param>
+            <param name="oldPassword">The old password.</param>
+            <param name="newPassword">The new password.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.SetRoles(System.String,System.String)">
+            <summary>
+            Sets the roles to user.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="roles">The comma separated list of the roles.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.GetUserApiKeys(System.String,System.String)">
+            <summary>
+            Gets the user API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="format">The format of the Response.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.DeleteApiKeys(System.String)">
+            <summary>
+            Deletes the API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+        </member>
+        <member name="M:DynabicPlatform.Services.UserService.GenerateNewApiKeys(System.String,System.String)">
+            <summary>
+            Generates the new API keys.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="format">The format of the Response.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
