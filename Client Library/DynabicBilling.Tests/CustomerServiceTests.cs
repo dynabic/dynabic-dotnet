@@ -137,6 +137,8 @@ namespace DynabicBilling.Tests
             Assert.IsNotNull(creditCard);
 
             creditCard.FirstNameOnCard += "_updated";
+            creditCard.Number = "4111111111111111";
+            creditCard.Cvv = "1234";
 
             var updatedCreditCard = _gateway.Customer.UpdateCreditCard(_testData.CustomerId.ToString(), creditCard.Id.ToString(), creditCard);
             Assert.IsNotNull(updatedCreditCard);
