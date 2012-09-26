@@ -27,7 +27,7 @@ namespace DynabicBilling.Classes
                     case EnvironmentType.Production:
                         return "https://api.Dynabic.com/Billing";
                     default:
-                        throw new Exception("Unsupported environment.");
+                        throw new NotSupportedException("Unsupported environment.");
                 }
             }
         }
@@ -40,8 +40,8 @@ namespace DynabicBilling.Classes
         private static String DevelopmentUrl()
         {
             // Access environment variables lazily to avoid issues on servers where access to environment variables is restricted
-            var host = System.Environment.GetEnvironmentVariable("GATEWAY_HOST") ?? "localhost";
-            var port = System.Environment.GetEnvironmentVariable("GATEWAY_PORT") ?? "3000";
+            //var host = System.Environment.GetEnvironmentVariable("GATEWAY_HOST") ?? "localhost";
+            //var port = System.Environment.GetEnvironmentVariable("GATEWAY_PORT") ?? "3000";
 
             //return String.Format("http://{0}:{1}", host, port);
             return "http://api.local-dynabic.com/ApiBilling";

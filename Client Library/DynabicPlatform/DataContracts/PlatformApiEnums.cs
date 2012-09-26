@@ -12,8 +12,6 @@ namespace DynabicPlatform.RestApiDataContract
     [DataContract]
     public enum EventType
     {
-        [EnumMember]
-        None = 0,
         /// <summary>All events will be shown.</summary>
         [EnumMember]
         All = Signup | AccountCancellation | SubscriptionRenewal | Payment | ChangeSetting | /*Report |*/ CustomerMailError | StatementGenerated |

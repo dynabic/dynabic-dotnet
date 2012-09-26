@@ -147,6 +147,7 @@ namespace DynabicBilling
         /// </summary>
         /// <param name="customerReferenceId">Customer's ReferenceID</param>
         /// <param name="format"> The desired response format (xml/json) </param>
+        /// <param name="siteSubdomain"> The site subdomain. </param>
         /// <returns> A CreditCardsList object containing all credit cards that correspond to the specified Customer </returns>
         public CreditCardsList GetCreditCardsByReferenceId(string siteSubdomain, string customerReferenceId, string format = ContentFormat.XML)
         {
@@ -169,6 +170,7 @@ namespace DynabicBilling
         /// </summary>
         /// <param name="customerReferenceId"> The Customer whose Credit Card is to be retrieved </param>
         /// <param name="format"> The format used for the data transfer (XML or JSON) </param>
+        /// <param name="siteSubdomain"> The site subdomain. </param>
         /// <returns> A CreditCardResponse object containing first credit card that belongs to the specified Customer </returns>
         public CreditCardResponse GetFirstCreditCardForCustomerByReferenceId(string siteSubdomain, string customerReferenceId, string format = ContentFormat.XML)
         {

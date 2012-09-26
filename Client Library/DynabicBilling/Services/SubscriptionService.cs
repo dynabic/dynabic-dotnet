@@ -192,11 +192,12 @@ namespace DynabicBilling
         /// </summary>
         /// <param name="subscriptionId">The Id of the Subscription whose Product needs to be changed</param>
         /// <param name="newProductPricingPlanId">The ProductPricingPlanId of the new Product for the Subscription</param>
+        /// <param name="setNextBillingToNow">True or false; if 'true', the subscription will be assessed and its billing cycle will start now</param>
         /// <param name="format"></param>
         /// <returns></returns>
-        public ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string format = ContentFormat.XML)
+        public ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string setNextBillingToNow = "false", string format = ContentFormat.XML)
         {
-            return _service.Put<ServiceResult>(string.Format("{0}/changeproduct/{1}/{2}.{3}", _gatewayURL, subscriptionId, newProductPricingPlanId, format));
+            return _service.Put<ServiceResult>(string.Format("{0}/changeproduct/{1}/{2}/{3}.{4}", _gatewayURL, subscriptionId, newProductPricingPlanId, setNextBillingToNow, format));
         }
 
         /// <summary>

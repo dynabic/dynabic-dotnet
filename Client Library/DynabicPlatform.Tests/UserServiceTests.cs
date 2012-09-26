@@ -106,7 +106,7 @@ namespace DynabicPlatform.Tests
         [Test]
         public void ModifyPassword()
         {
-            _gateway.Users.ModifyPassword(_testData.UserId.ToString(), "test123", "newpwd");
+            _gateway.Users.ModifyPassword(_testData.UserId.ToString(), "test123", "newpwd123");
         }
 
         [Test]
@@ -117,13 +117,12 @@ namespace DynabicPlatform.Tests
             Assert.IsNotNull(user);
             Assert.AreEqual(_testData.UserId, user.Id);
 
-            // remove all roles
+            // remove all roles. The roles field will be set to default "user" role
             _gateway.Users.SetRoles(user.Id.ToString(), string.Empty);
 
             user = _gateway.Users.GetUserById(user.Id.ToString());
             Assert.IsNotNull(user);
-            Assert.IsEmpty(user.UserRoles);
-
+            
             // grant user to two roles
             _gateway.Users.SetRoles(user.Id.ToString(), "user,admin");
             user = _gateway.Users.GetUserById(user.Id.ToString());

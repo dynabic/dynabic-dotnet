@@ -60,19 +60,6 @@ namespace DynabicBilling.Tests
         }
 
         [Test]
-        public void UpdateSubscription()
-        {
-            var subscription = _gateway.Subscription.GetSubscription(_testData.SubscriptionId.ToString());
-            Assert.IsNotNull(subscription);
-
-            subscription.CancellationDetails = "test update";
-
-            var updatedSubscription = _gateway.Subscription.UpdateSubscription(_testData.Subdomain, subscription.Id.ToString(), subscription);
-            Assert.IsNotNull(updatedSubscription);
-            Assert.AreEqual(subscription.CancellationDetails, updatedSubscription.CancellationDetails);
-        }
-
-        [Test]
         public void GetAddress()
         {
             var subscription = _gateway.Subscription.GetSubscription(_testData.SubscriptionId.ToString());
@@ -93,6 +80,19 @@ namespace DynabicBilling.Tests
             Assert.IsNotNull(customers);
             Assert.AreEqual(1, customers.Count);
             Assert.AreEqual(subscription.CustomerId, customers[0].Id);
+        }
+        
+        [Test]
+        public void UpdateSubscription()
+        {
+            var subscription = _gateway.Subscription.GetSubscription(_testData.SubscriptionId.ToString());
+            Assert.IsNotNull(subscription);
+
+            subscription.CancellationDetails = "test update";
+
+            var updatedSubscription = _gateway.Subscription.UpdateSubscription(_testData.Subdomain, subscription.Id.ToString(), subscription);
+            Assert.IsNotNull(updatedSubscription);
+            Assert.AreEqual(subscription.CancellationDetails, updatedSubscription.CancellationDetails);
         }
 
         #region Operations
@@ -156,7 +156,29 @@ namespace DynabicBilling.Tests
             var product = _gateway.Products.GetProductById(subscription.ProductId.ToString());
             Assert.IsNotNull(product);
 
-            _gateway.Subscription.ChangeSubscriptionProduct(subscription.Id.ToString(), product.PricingPlans[0].Id.ToString());
+            var secondProduct = _testsHelper.AddProductToFamily(product.FamilyId);
+            Assert.IsNotNull(secondProduct);
+
+            _gateway.Subscription.ChangeSubscriptionProduct(subscription.Id.ToString(), secondProduct.PricingPlans[0].Id.ToString());
+        }
+
+        [Test]
+        public void ChangeSubscriptionProduct_SetNextBillingToNow()
+        {
+            var subscription = _gateway.Subscription.GetSubscription(_testData.SubscriptionId.ToString());
+            Assert.IsNotNull(subscription);
+
+            var product = _gateway.Products.GetProductById(subscription.ProductId.ToString());
+            Assert.IsNotNull(product);
+
+            var secondProduct = _testsHelper.AddProductToFamily(product.FamilyId);
+            Assert.IsNotNull(secondProduct);
+
+            _gateway.Subscription.ChangeSubscriptionProduct(subscription.Id.ToString(), secondProduct.PricingPlans[0].Id.ToString(), Boolean.TrueString);
+            var updatedSubscription = _gateway.Subscription.GetSubscription(subscription.Id.ToString());
+            Assert.IsNotNull(updatedSubscription);
+            Assert.AreEqual(secondProduct.PricingPlans[0].Id.ToString(), updatedSubscription.ProductPricingPlanId.ToString());
+            Assert.Greater(TimeSpan.FromMinutes(1), DateTime.Now.Subtract(updatedSubscription.SignupDate));
         }
 
         [Test]

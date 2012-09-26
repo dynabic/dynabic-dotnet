@@ -166,7 +166,8 @@ namespace DynabicBilling.RestAPI.RestInterfaces
         /// </summary>
         /// <param name="subscriptionId"> The Id of the Subscription whose Product needs to be changed </param>
         /// <param name="newProductPricingPlanId"> The ProductPricingPlanId of the new Product for the Subscription </param>
-        DynabicBilling.RestApiDataContract.ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string format = "xml");
+        /// <param name="setNextBillingToNow"> True or false; if 'true', the subscription will be assessed and its billing cycle will start now </param>
+        DynabicBilling.RestApiDataContract.ServiceResult ChangeSubscriptionProduct(string subscriptionId, string newProductPricingPlanId, string setNextBillingToNow = "false", string format = "xml");
 
         /// <summary>
         /// An upgrade/downgrade "migration" allows you to move a subscriber to a new product using basic proration rules. 

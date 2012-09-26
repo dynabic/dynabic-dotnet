@@ -26,7 +26,7 @@ namespace DynabicPlatform.Classes
                     case EnvironmentType.Production:
                         return "https://api.Dynabic.com/Platform";
                     default:
-                        throw new Exception("Unsupported environment.");
+                        throw new NotSupportedException("Unsupported environment.");
                 }
             }
         }

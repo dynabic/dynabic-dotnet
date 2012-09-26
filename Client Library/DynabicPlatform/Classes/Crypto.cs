@@ -18,11 +18,13 @@ namespace DynabicPlatform.Classes
             var contentBytes = encoding.GetBytes(content.ToLower());
 
             // compute the hash
-            HMACSHA1 algorithm = new HMACSHA1(signingKeyBytes);
-            byte[] hash = algorithm.ComputeHash(contentBytes);
+            using (HMACSHA1 algorithm = new HMACSHA1(signingKeyBytes))
+            {
+                byte[] hash = algorithm.ComputeHash(contentBytes);
 
-            // convert the bytes to string and make url-safe by replacing '+' and '/' characters
-            return Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_").TrimEnd('=');
+                // convert the bytes to string and make url-safe by replacing '+' and '/' characters
+                return Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_").TrimEnd('=');
+            }
         }
 
         public static string SignUrl(string url, string clientKey, string signingKey)
@@ -42,10 +44,12 @@ namespace DynabicPlatform.Classes
 
         public virtual String HmacHash(String key, String message)
         {
-            var hmac = new HMACSHA1(Sha1Bytes(key));
-            byte[] hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
+            using (var hmac = new HMACSHA1(Sha1Bytes(key)))
+            {
+                byte[] hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(message));
 
-            return BitConverter.ToString(hashBytes).Replace("-", "");
+                return BitConverter.ToString(hashBytes).Replace("-", "");
+            }
         }
 
         public virtual byte[] Sha1Bytes(String s)

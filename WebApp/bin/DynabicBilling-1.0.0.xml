@@ -2955,7 +2955,7 @@
             if false then the subscription balance will be increased or decreased with the given amount(positive or negative)</param>
             <param name="charge">The charge request.</param>
         </member>
-        <member name="M:DynabicBilling.RestAPI.RestInterfaces.ISubscriptionsService.ChangeSubscriptionProduct(System.String,System.String,System.String)">
+        <member name="M:DynabicBilling.RestAPI.RestInterfaces.ISubscriptionsService.ChangeSubscriptionProduct(System.String,System.String,System.String,System.String)">
             <summary>
             Changing the product has the following effects:
               No proration is done - your customer is not charged or credited at this time (if you wish to have proration, 
@@ -2966,6 +2966,7 @@
             </summary>
             <param name="subscriptionId"> The Id of the Subscription whose Product needs to be changed </param>
             <param name="newProductPricingPlanId"> The ProductPricingPlanId of the new Product for the Subscription </param>
+            <param name="setNextBillingToNow"> True or false; if 'true', the subscription will be assessed and its billing cycle will start now </param>
         </member>
         <member name="M:DynabicBilling.RestAPI.RestInterfaces.ISubscriptionsService.UpgradeDowngradeSubscriptionProduct(System.String,System.String,System.String,System.String,System.String)">
             <summary>
@@ -3155,6 +3156,7 @@
             </summary>
             <param name="customerReferenceId">Customer's ReferenceID</param>
             <param name="format"> The desired response format (xml/json) </param>
+            <param name="siteSubdomain"> The site subdomain. </param>
             <returns> A CreditCardsList object containing all credit cards that correspond to the specified Customer </returns>
         </member>
         <member name="M:DynabicBilling.CustomerService.GetCustomersFirstCreditCard(System.String,System.String)">
@@ -3171,6 +3173,7 @@
             </summary>
             <param name="customerReferenceId"> The Customer whose Credit Card is to be retrieved </param>
             <param name="format"> The format used for the data transfer (XML or JSON) </param>
+            <param name="siteSubdomain"> The site subdomain. </param>
             <returns> A CreditCardResponse object containing first credit card that belongs to the specified Customer </returns>
         </member>
         <member name="M:DynabicBilling.CustomerService.AddCreditCard(System.String,DynabicBilling.RestApiDataContract.CreditCardRequest,System.String)">
@@ -3815,7 +3818,7 @@
             if false then the subscription balance will be increased or decreased with the given amount(positive or negative)</param>
             <param name="charge">The charge.</param>
         </member>
-        <member name="M:DynabicBilling.SubscriptionService.ChangeSubscriptionProduct(System.String,System.String,System.String)">
+        <member name="M:DynabicBilling.SubscriptionService.ChangeSubscriptionProduct(System.String,System.String,System.String,System.String)">
             <summary>
             Changing the product has the following effects:
             No proration is done - your customer is not charged or credited at this time (if you wish to have proration,
@@ -3826,6 +3829,7 @@
             </summary>
             <param name="subscriptionId">The Id of the Subscription whose Product needs to be changed</param>
             <param name="newProductPricingPlanId">The ProductPricingPlanId of the new Product for the Subscription</param>
+            <param name="setNextBillingToNow">True or false; if 'true', the subscription will be assessed and its billing cycle will start now</param>
             <param name="format"></param>
             <returns></returns>
         </member>
